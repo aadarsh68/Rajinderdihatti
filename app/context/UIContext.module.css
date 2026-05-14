@@ -1,0 +1,137 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 8, 6, 0.7);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.modal {
+  background: #fff;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(201, 152, 42, 0.15);
+}
+
+.header {
+  padding: 24px 28px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.close {
+  background: rgba(0,0,0,0.03);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  color: #999;
+  transition: all 0.2s;
+}
+
+.close:hover {
+  background: rgba(0,0,0,0.06);
+  color: #333;
+}
+
+.body {
+  padding: 8px 28px 28px;
+}
+
+.body p {
+  margin: 0;
+  color: #4a4a4a;
+  line-height: 1.7;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.footer {
+  padding: 20px 28px 24px;
+  background: #fafafa;
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  border-top: 1px solid rgba(0,0,0,0.04);
+}
+
+.btnPrimary {
+  background: #1a1510;
+  color: #e8c870;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+}
+
+.btnPrimary:hover {
+  background: #c9982a;
+  color: #12100e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201, 152, 42, 0.3);
+}
+
+.btnSecondary {
+  background: #fff;
+  color: #666;
+  border: 1.5px solid #eee;
+  padding: 12px 32px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnSecondary:hover {
+  background: #f8f8f8;
+  border-color: #ddd;
+  color: #333;
+}
+
+/* Types */
+.error h3 { color: #a52a2a; }
+.confirm h3 { color: #8b6914; }
+.info h3 { color: #1a1510; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

@@ -1,0 +1,234 @@
+.page {
+  min-height: 80vh;
+  background-color: #f5efe4;
+  font-family: 'Montserrat', sans-serif;
+  padding: 40px 32px 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+.pageHeader { text-align: center; margin-bottom: 40px; }
+
+.breadcrumb {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #9a8060;
+  text-transform: uppercase;
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.breadLink { color: #9a8060; text-decoration: none; transition: color 0.2s; }
+.breadLink:hover { color: #c9982a; }
+.breadSep { color: #c9982a; font-size: 8px; }
+
+.pageTitle {
+  font-size: 34px;
+  font-weight: 300;
+  letter-spacing: 8px;
+  color: #3a2e1e;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+}
+.subtitle {
+  font-size: 12px;
+  color: #9a8060;
+  letter-spacing: 1px;
+  margin-top: 10px;
+}
+
+.goldDivider { display: flex; align-items: center; gap: 12px; margin: 12px 0; }
+.dividerLine { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,152,42,0.5), transparent); }
+.dividerDiamond { color: #c9982a; font-size: 8px; }
+
+.authLayout {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.authCard {
+  background: #faf5ec;
+  border: 1.5px solid rgba(201,152,42,0.25);
+  padding: 36px 32px 32px;
+  border-radius: 2px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 4px 24px rgba(139,105,20,0.08);
+}
+
+.summaryCornerTL, .summaryCornerTR, .summaryCornerBL, .summaryCornerBR { position: absolute; width: 14px; height: 14px; }
+.summaryCornerTL { top: -1px; left: -1px; border-top: 2px solid #c9982a; border-left: 2px solid #c9982a; }
+.summaryCornerTR { top: -1px; right: -1px; border-top: 2px solid #c9982a; border-right: 2px solid #c9982a; }
+.summaryCornerBL { bottom: -1px; left: -1px; border-bottom: 2px solid #c9982a; border-left: 2px solid #c9982a; }
+.summaryCornerBR { bottom: -1px; right: -1px; border-bottom: 2px solid #c9982a; border-right: 2px solid #c9982a; }
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #3a2e1e;
+  text-transform: uppercase;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.sectionNum {
+  font-size: 28px;
+  font-weight: 300;
+  color: rgba(201,152,42,0.5);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.fullWidth { grid-column: 1 / -1; }
+.formGroup { display: flex; flex-direction: column; gap: 6px; }
+
+.label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #8b6914;
+  text-transform: uppercase;
+}
+
+.input {
+  background: #f8f2e6;
+  border: 1px solid rgba(139,105,20,0.25);
+  border-radius: 2px;
+  padding: 11px 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: #3a2e1e;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.input::placeholder { color: #b8a880; }
+.input:focus { border-color: #c9982a; box-shadow: 0 0 0 3px rgba(201,152,42,0.1); }
+.inputError { border-color: #c05030; }
+.inputError:focus { box-shadow: 0 0 0 3px rgba(192,80,48,0.1); }
+
+.phoneWrap {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid rgba(139,105,20,0.25);
+  border-radius: 2px;
+  overflow: hidden;
+  background: #f8f2e6;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.phoneWrap:focus-within { border-color: #c9982a; box-shadow: 0 0 0 3px rgba(201,152,42,0.1); }
+.phonePrefix {
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8b6914;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid rgba(139,105,20,0.2);
+  background: rgba(201,152,42,0.06);
+  white-space: nowrap;
+}
+.inputPhone { border: none; box-shadow: none; background: transparent; }
+.inputPhone:focus { box-shadow: none; }
+
+.passwordWrap { position: relative; display: flex; align-items: center; }
+.inputPassword { padding-right: 42px; }
+.eyeBtn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9a8060;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  padding: 0;
+}
+.eyeBtn:hover { color: #c9982a; }
+
+.strengthWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+.strengthBars { display: flex; gap: 4px; flex: 1; }
+.strengthBar {
+  height: 3px;
+  flex: 1;
+  border-radius: 2px;
+  background: rgba(139,105,20,0.15);
+  transition: background 0.3s;
+}
+.strength1 { background: #c05030; }
+.strength2 { background: #d08020; }
+.strength3 { background: #4a8a50; }
+.strength4 { background: #2a7a40; }
+.strengthLabel { font-size: 10px; font-weight: 700; letter-spacing: 1px; white-space: nowrap; }
+.strengthLabel1 { color: #c05030; }
+.strengthLabel2 { color: #d08020; }
+.strengthLabel3 { color: #4a8a50; }
+.strengthLabel4 { color: #2a7a40; }
+
+.errorMsg {
+  font-size: 10px;
+  color: #c05030;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.btnPrimary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: linear-gradient(135deg, #3a2e1e, #5a4220);
+  color: #e8c870;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border-radius: 2px;
+  transition: all 0.25s;
+  margin-top: 4px;
+}
+.btnPrimary:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(58,46,30,0.25); }
+
+.altActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.altText { font-size: 12px; color: #9a8060; letter-spacing: 0.3px; }
+.altLink {
+  font-size: 12px;
+  font-weight: 700;
+  color: #8b6914;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+.altLink:hover { color: #c9982a; }
