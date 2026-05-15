@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../lib/auth';
+import cloudinary from '../../../lib/cloudinary';
 
 export async function POST(request) {
   try {
@@ -21,18 +20,24 @@ export async function POST(request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-    const uploadDir = join(process.cwd(), 'public', 'uploads');
-    
-    // Ensure directory exists
-    await mkdir(uploadDir, { recursive: true });
-    
-    const path = join(uploadDir, fileName);
-    await writeFile(path, buffer);
+    // Upload to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: 'mrigaank-products',
+          resource_type: 'auto',
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      uploadStream.end(buffer);
+    });
 
     return NextResponse.json({ 
       success: true, 
-      url: `/uploads/${fileName}` 
+      url: result.secure_url 
     });
   } catch (error) {
     console.error('Upload error:', error);
