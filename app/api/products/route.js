@@ -14,6 +14,13 @@ export async function GET(request) {
           { category: { equals: 'sale', mode: 'insensitive' } },
           { status: { equals: 'sale', mode: 'insensitive' } }
         ];
+      } else if (category === 'unstitched') {
+        where.status = { in: ['active', 'sale'] };
+        where.OR = [
+          { category: { equals: 'unstitched', mode: 'insensitive' } },
+          { category: { equals: 'Unstitched Suits', mode: 'insensitive' } },
+          { category: { equals: 'Suit Fabric', mode: 'insensitive' } }
+        ];
       } else {
         where.status = { in: ['active', 'sale'] };
         where.category = { equals: category, mode: 'insensitive' };

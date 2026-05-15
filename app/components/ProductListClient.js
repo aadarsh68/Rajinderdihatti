@@ -113,7 +113,7 @@ export default function ProductListClient({ products: initialProducts, title, su
       </main>
 
       <footer className={styles.footer}>
-        <p className={styles.footerText}>© 2024 Mrigaank Tex. All Rights Reserved.</p>
+        <p className={styles.footerText}>© 2026 Mrigaank Tex. All Rights Reserved.</p>
       </footer>
     </div>
   );

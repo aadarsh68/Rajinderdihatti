@@ -1,7 +1,7 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
 function GoldDivider() {
@@ -13,7 +13,16 @@ function GoldDivider() {
 }
 
 export default function VerifyOtpPage() {
+  return (
+    <Suspense fallback={<div className={styles.page}>Loading...</div>}>
+      <VerifyOtpContent />
+    </Suspense>
+  );
+}
+
+function VerifyOtpContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [type, setType] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -24,10 +33,9 @@ export default function VerifyOtpPage() {
   const inputRefs = useRef([]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setEmail(params.get('email') || '');
-    setType(params.get('type') || '');
-  }, []);
+    setEmail(searchParams.get('email') || '');
+    setType(searchParams.get('type') || '');
+  }, [searchParams]);
 
   useEffect(() => {
     if (resendTimer > 0) {

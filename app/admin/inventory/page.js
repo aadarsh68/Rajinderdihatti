@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useUI } from '../../context/UIContext';
 import styles from '../page.module.css';
 
-const CATEGORIES = ['All', 'Suit Fabric', 'Sherwani', 'Indo-Western', 'Kurta Pajama', 'Accessories'];
+const CATEGORIES = ['All', 'Unstitched Suits', 'Accessories'];
 
 export default function AdminInventory() {
   const queryClient = useQueryClient();
@@ -14,7 +14,7 @@ export default function AdminInventory() {
   const [editingId, setEditingId] = useState(null);
   const [editValues, setEditValues] = useState({});
   const [showAddModal, setShowAddModal] = useState(false);
-  const [newProduct, setNewProduct] = useState({ code: '', name: '', category: 'Suit Fabric', fabric: '', color: '', bg: '#c9982a', imageUrl: '', description: '', price: '', costPrice: '', stock: '', reorderLevel: 5, sku: '', status: 'active' });
+  const [newProduct, setNewProduct] = useState({ code: '', name: '', category: '', fabric: '', color: '', bg: '#c9982a', imageUrl: '', description: '', price: '', costPrice: '', stock: '', reorderLevel: 5, sku: '', status: 'active' });
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [toast, setToast] = useState(null);
@@ -35,7 +35,7 @@ export default function AdminInventory() {
     onSuccess: () => {
       queryClient.invalidateQueries(['admin-products']);
       setShowAddModal(false);
-      setNewProduct({ code: '', name: '', category: 'Suit Fabric', fabric: '', color: '', bg: '#c9982a', imageUrl: '', description: '', price: '', costPrice: '', stock: '', reorderLevel: 5, sku: '', status: 'active' });
+      setNewProduct({ code: '', name: '', category: '', fabric: '', color: '', bg: '#c9982a', imageUrl: '', description: '', price: '', costPrice: '', stock: '', reorderLevel: 5, sku: '', status: 'active' });
       showToast('Product added successfully');
     }
   });
@@ -131,7 +131,10 @@ export default function AdminInventory() {
 
   const filtered = inventory.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.code.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = categoryFilter === 'All' || p.category === categoryFilter;
+    let matchesCategory = categoryFilter === 'All' || p.category === categoryFilter;
+    if (categoryFilter === 'Unstitched Suits') {
+      matchesCategory = p.category?.toLowerCase() === 'unstitched suits' || p.category?.toLowerCase() === 'unstitched' || p.category?.toLowerCase() === 'suit fabric';
+    }
     return matchesSearch && matchesCategory;
   });
 
@@ -296,8 +299,8 @@ export default function AdminInventory() {
                 {/* Right Column: Premium Form Grid */}
                 <div className={styles.modalRightColumn}>
                   <div className={styles.formField}>
-                    <label>Code *</label>
-                    <input placeholder="MT-101" value={newProduct.code} onChange={e => setNewProduct({...newProduct, code: e.target.value})} />
+                    <label>SKU Code *</label>
+                    <input placeholder="MT-101" value={newProduct.code} onChange={e => setNewProduct({...newProduct, code: e.target.value, sku: e.target.value})} />
                   </div>
                   <div className={styles.formField}>
                     <label>Product Name *</label>
@@ -305,9 +308,7 @@ export default function AdminInventory() {
                   </div>
                   <div className={styles.formField}>
                     <label>Category</label>
-                    <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})}>
-                      {CATEGORIES.filter(c => c !== 'All').map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
+                    <input placeholder="Enter Category" value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} />
                   </div>
                   <div className={styles.formField}>
                     <label>Fabric</label>

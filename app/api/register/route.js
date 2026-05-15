@@ -43,22 +43,40 @@ export async function POST(request) {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
-    await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name: `${firstName.trim()} ${lastName.trim()}`,
-        phone,
-        otp,
-        otpExpiry,
-      },
-    });
+    // Set a timeout for the Prisma call to avoid hanging
+    const registerUser = async () => {
+      return await prisma.user.create({
+        data: {
+          email,
+          password: hashedPassword,
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          phone,
+          otp,
+          otpExpiry,
+        },
+      });
+    };
 
-    await sendOtpEmail(email, otp);
+    // Race against a 10s timeout
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Database connection timed out')), 10000)
+    );
+
+    await Promise.race([registerUser(), timeoutPromise]);
+
+    try {
+      console.log('Attempting to send OTP email...');
+      await sendOtpEmail(email, otp);
+    } catch (mailError) {
+      console.error('Email sending failed, but user was created:', mailError);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Registration error:', error);
-    return buildError('Unable to register user. Please try again later.', 500);
+    console.error('Registration error details:', error);
+    if (error.message === 'Database connection timed out') {
+      return buildError('Database connection timed out. Please check your Neon DB status.', 504);
+    }
+    return buildError(`Registration failed: ${error.message}`, 500);
   }
 }

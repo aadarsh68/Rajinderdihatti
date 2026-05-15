@@ -21,6 +21,7 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,9 +45,12 @@ export default function RegisterPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (isLoading) return;
     if (!validate()) return;
 
+    setIsLoading(true);
     setServerError('');
     try {
       const response = await fetch('/api/register', {
@@ -64,12 +68,14 @@ export default function RegisterPage() {
       if (!response.ok) {
         const data = await response.json().catch(() => null);
         setServerError(data?.error || data?.message || 'Registration failed');
+        setIsLoading(false);
         return;
       }
 
       router.push(`/verify-otp?email=${encodeURIComponent(form.email.trim().toLowerCase())}`);
     } catch (error) {
-      setServerError('Unable to create account. Please try again.');
+      setServerError('Unable to create account. Please check your internet connection and try again.');
+      setIsLoading(false);
     }
   };
 
@@ -98,7 +104,7 @@ export default function RegisterPage() {
       </div>
 
       <div className={styles.authLayout}>
-        <div className={styles.authCard}>
+        <form className={styles.authCard} onSubmit={handleSubmit}>
           <div className={styles.summaryCornerTL} /><div className={styles.summaryCornerTR} />
           <div className={styles.summaryCornerBL} /><div className={styles.summaryCornerBR} />
 
@@ -209,11 +215,13 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <button onClick={handleSubmit} className={styles.btnPrimary}>
-            Create Account
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
+          <button type="submit" disabled={isLoading} className={styles.btnPrimary}>
+            {isLoading ? 'Creating Account...' : 'Create Account'}
+            {!isLoading && (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            )}
           </button>
           {serverError && <span className={styles.errorMsg}>{serverError}</span>}
 
@@ -223,7 +231,7 @@ export default function RegisterPage() {
             <span className={styles.altText}>Already have an account?</span>
             <Link href="/login" className={styles.altLink}>Sign in →</Link>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

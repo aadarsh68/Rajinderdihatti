@@ -32,14 +32,14 @@
 .heroTitle {
   font-family: var(--font-cormorant), serif;
   font-size: clamp(38px, 7vw, 84px); font-weight: 800; letter-spacing: 4px;
-  text-transform: uppercase; line-height: 1.1; margin-bottom: 48px;
+  text-transform: uppercase; line-height: 1.1; margin-bottom: 28px;
   text-shadow: 0 4px 12px rgba(0,0,0,0.2);
   white-space: nowrap;
 }
 .heroSubtitle {
   font-family: var(--font-outfit), sans-serif;
   font-size: 14px; font-weight: 800; letter-spacing: 8px; text-transform: uppercase;
-  color: #e8c870; margin-bottom: 24px; display: block;
+  color: #e8c870; margin-bottom: 14px; display: block;
 }
 .heroBtn {
   display: inline-block; background: #e8c870; color: #1a1510;
@@ -383,7 +383,7 @@
 
 @media (max-width: 860px) {
   .hero { height: 70vh; margin-bottom: 40px; }
-  .heroTitle { letter-spacing: 6px; line-height: 1; margin-bottom: 30px; }
+  .heroTitle { font-size: clamp(26px, 6vw, 54px); letter-spacing: 4px; line-height: 1.1; margin-bottom: 30px; white-space: normal; }
   .main { padding: 0 20px 60px; }
   .sectionTitle { font-size: 28px; letter-spacing: 4px; margin-bottom: 40px; }
   .collectionsSection { margin-bottom: 60px; }
@@ -394,7 +394,8 @@
 
 @media (max-width: 480px) {
   .productGrid { grid-template-columns: 1fr; gap: 20px; }
-  .heroTitle { font-size: 42px; letter-spacing: 4px; }
+  .heroContent { padding: 0 20px; width: 100%; }
+  .heroTitle { font-size: clamp(24px, 7vw, 36px); letter-spacing: 2px; white-space: normal; }
   .heroBtn { padding: 18px 40px; font-size: 11px; }
   .shopHeader { flex-direction: column; align-items: stretch; }
   .searchInput { width: 100% !important; }

@@ -1,7 +1,7 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
 function GoldDivider() {
@@ -13,7 +13,16 @@ function GoldDivider() {
 }
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className={styles.page}>Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+function ResetPasswordContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,9 +32,8 @@ export default function ResetPasswordPage() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setEmail(params.get('email') || '');
-  }, []);
+    setEmail(searchParams.get('email') || '');
+  }, [searchParams]);
 
   const validate = () => {
     const newErrors = {};

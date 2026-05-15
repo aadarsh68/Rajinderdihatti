@@ -71,7 +71,7 @@ export default function HomeClient({ initialProducts }) {
     <div className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.heroBg}>
-          <img src="/hero-luxury.png" alt="Luxury Ethnic Wear" className={styles.heroImage} />
+          <img src="/hero-bg.jpg" alt="Luxury Ethnic Wear" className={styles.heroImage} />
         </div>
         <div className={styles.heroOverlay}></div>
         <div className={styles.heroContent}>
@@ -89,9 +89,9 @@ export default function HomeClient({ initialProducts }) {
           <h2 className={styles.sectionTitle}>Featured Collections</h2>
           <div className={styles.collectionsGrid}>
             {[
-              { name: 'Unstitched Suits', count: '120+ Styles', img: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800' },
-              { name: 'Party Wear', count: '85+ Styles', img: 'https://images.unsplash.com/photo-1594463750939-ebb28c3f5f53?auto=format&fit=crop&q=80&w=800' },
-              { name: 'Bridal Couture', count: '40+ Styles', img: 'https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?auto=format&fit=crop&q=80&w=800' }
+              { name: 'Unstitched Suits', count: '120+ Styles', img: 'https://images.unsplash.com/photo-1525441451246-3970221d4cbf?auto=format&fit=crop&q=80&w=800' },
+              { name: 'Party Wear', count: '85+ Styles', img: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=800' },
+              { name: 'Bridal Couture', count: '40+ Styles', img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800' }
             ].map(col => (
               <div key={col.name} className={styles.collectionCard}>
                 <img src={col.img} alt={col.name} className={styles.collectionImg} />
@@ -213,7 +213,7 @@ export default function HomeClient({ initialProducts }) {
         </section>
 
         <footer className={styles.footer}>
-          <p className={styles.footerText}>© 2024 Mrigaank Tex. All Rights Reserved.</p>
+          <p className={styles.footerText}>© 2026 Mrigaank Tex. All Rights Reserved.</p>
         </footer>
       </main>
     </div>
