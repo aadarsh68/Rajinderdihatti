@@ -1,38 +1,23 @@
-import "server-only";
-import { Pool, neonConfig } from "@neondatabase/serverless";
+
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "@prisma/client";
-import ws from "ws";
-
-// Standard configuration for Neon serverless in Node.js environments
-if (typeof window === "undefined") {
-  neonConfig.webSocketConstructor = ws;
-}
 
 // Get Neon connection string from the environment
 const connectionString = process.env.DATABASE_URL;
-const isNeon = connectionString?.includes("neon.tech");
-
-let prismaClientOptions = {};
-
-if (isNeon) {
-  // Standard configuration for Neon serverless in Node.js environments
-  neonConfig.webSocketConstructor = ws;
-  const pool = new Pool({ connectionString });
-  const adapter = new PrismaNeon(pool);
-  prismaClientOptions.adapter = adapter;
-}
+const adapter = new PrismaNeon({ connectionString });
 
 // Serverless and Vercel-compatible Prisma singleton pattern
-const globalForPrisma = globalThis;
+const globalForPrisma = globalThis
 
 /**
- * Export a singleton instance of PrismaClient.
- * - Uses Neon adapter for Neon DB.
- * - Uses standard direct connection for local/other DBs.
+ * Export a singleton instance of PrismaClient configured with the Neon adapter.
+ * - Prevents multiple instances in development/hot reload/serverless environments.
+ * - Compatible with Vercel, Neon, and other serverless Node.js runtimes.
+ * - Uses @prisma/adapter-neon for HTTP-based connection to Neon.
  */
-export const prisma =
-  globalForPrisma.prisma ?? new PrismaClient(prismaClientOptions);
+export const prisma = globalForPrisma.prisma ?? new PrismaClient({
+  adapter
+});
 
 // In development, store the instance globally to survive hot reloads
 if (process.env.NODE_ENV !== "production") {
