@@ -25,13 +25,13 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  metadataBase: new URL('https://mrigaanktex.com'),
+  metadataBase: new URL('https://rajinderdihatti.com'),
   title: {
-    default: 'Mrigaank Tex — Premium Ethnic Suits & Sarees',
+    default: 'Mrigaank Tex — Premium Unstitched Suits',
     template: '%s | Mrigaank Tex'
   },
-  description: 'Discover Mrigaank Tex. Curated collection of premium ethnic suits and sarees, showcasing Indian craftsmanship and elegance.',
-  keywords: ['ethnic wear', 'premium suits', 'designer sarees', 'organza silk', 'Indian fashion', 'Mrigaank Tex'],
+  description: 'Discover Mrigaank Tex. Curated collection of premium unstitched ethnic suits, showcasing Indian craftsmanship and elegance.',
+  keywords: ['unstitched suits', 'premium suits', 'ethnic fabrics', 'party wear unstitched', 'Indian fashion', 'Mrigaank Tex'],
   authors: [{ name: 'Mrigaank Tex' }],
   creator: 'Mrigaank Tex',
   publisher: 'Mrigaank Tex',
@@ -41,16 +41,16 @@ export const metadata = {
     telephone: false,
   },
   openGraph: {
-    title: 'Mrigaank Tex — Premium Ethnic Suits & Sarees',
-    description: 'Curated collection of premium ethnic suits and sarees.',
-    url: 'https://mrigaanktex.com',
-    siteName: 'Mrigaank Tex',
+    title: 'Rajinder Di Hatti — Premium Unstitched Suits',
+    description: 'Curated collection of premium unstitched ethnic suits.',
+    url: 'https://rajinderdihatti.com',
+    siteName: 'Rajinder Di Hatti',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Mrigaank Tex Luxury Collection',
+        alt: 'Rajinder Di Hatti Luxury Collection',
       },
     ],
     locale: 'en_IN',
@@ -58,8 +58,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mrigaank Tex — Premium Ethnic Suits & Sarees',
-    description: 'Curated collection of premium ethnic suits and sarees.',
+    title: 'Rajinder Di Hatti — Premium Unstitched Suits',
+    description: 'Curated collection of premium unstitched ethnic suits.',
     images: ['/og-image.jpg'],
   },
   robots: {

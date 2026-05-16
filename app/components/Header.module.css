@@ -46,10 +46,34 @@
   text-decoration: none;
 }
 .logoImg {
-  height: 100px; width: auto;
+  height: 70px;
+  width: auto;
   mix-blend-mode: multiply;
-  padding: 0;
+  transition: transform 0.3s ease;
+  margin-bottom: -4px;
 }
+.textLogo {
+  font-family: var(--font-cormorant), serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #1a1510;
+  text-transform: uppercase;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+.logoWrap:hover .logoImg { transform: scale(1.05); }
+.logoWrap:hover .textLogo { color: #8b6914; }
+
+@media (max-width: 860px) {
+  .logoImg { height: 50px; }
+  .textLogo { font-size: 11px; letter-spacing: 2px; }
+}
+@media (max-width: 480px) {
+  .logoImg { height: 40px; }
+  .textLogo { font-size: 9px; letter-spacing: 1.5px; }
+}
+
 .logoSubtext {
   font-family: var(--font-cormorant), serif;
   font-size: 13px; font-weight: 700; color: #1a1510;
@@ -116,7 +140,7 @@
   }
   .nav { display: none; }
   .hamburger { display: flex; }
-  .logoImg { height: 70px; }
+  .logoWrap { padding: 4px 0; }
   .headerSearchInput { width: 120px; }
   .headerLeft { gap: 4px; }
   .headerRight { gap: 4px; }
@@ -150,6 +174,6 @@
   padding-top: 30px; display: flex; gap: 20px;
 }
 @media (max-width: 480px) {
-  .logoImg { height: 60px; }
+  .logoWrap { padding: 2px 0; }
   .announcementBar { font-size: 8px; padding: 8px 12px; letter-spacing: 1.5px; }
 }

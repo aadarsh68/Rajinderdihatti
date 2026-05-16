@@ -76,7 +76,7 @@ export default function HomeClient({ initialProducts }) {
         <div className={styles.heroOverlay}></div>
         <div className={styles.heroContent}>
           <span className={styles.heroSubtitle}>Exquisite Craftsmanship</span>
-          <h1 className={styles.heroTitle}>RAJINDER DI HATTI</h1>
+          <h1 className={styles.heroTitle}>MRIGAANK TEX</h1>
           <button className={styles.heroBtn} onClick={() => document.getElementById('shop').scrollIntoView({behavior: 'smooth'})}>
             Explore Collection
           </button>
@@ -89,9 +89,9 @@ export default function HomeClient({ initialProducts }) {
           <h2 className={styles.sectionTitle}>Featured Collections</h2>
           <div className={styles.collectionsGrid}>
             {[
-              { name: 'Unstitched Suits', count: '120+ Styles', img: 'https://images.unsplash.com/photo-1525441451246-3970221d4cbf?auto=format&fit=crop&q=80&w=800' },
-              { name: 'Party Wear', count: '85+ Styles', img: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=800' },
-              { name: 'Bridal Couture', count: '40+ Styles', img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800' }
+              { name: 'Daily Wear Suits', count: '120+ Styles', img: '/unstitched.png' },
+              { name: 'Party Wear Suits', count: '85+ Styles', img: '/party.png' },
+              { name: 'Bridal Unstitched', count: '40+ Styles', img: '/bridal.png' }
             ].map(col => (
               <div key={col.name} className={styles.collectionCard}>
                 <img src={col.img} alt={col.name} className={styles.collectionImg} />
@@ -206,7 +206,7 @@ export default function HomeClient({ initialProducts }) {
             <h2 className={styles.storyTitle}>Our Heritage</h2>
             <p className={styles.storyText}>
               Mrigaank Tex represents a legacy of textile excellence. 
-              We curate only the finest unstitched and stitched ethnic wear, ensuring every thread tells a story of 
+              We curate only the finest unstitched ethnic suit fabrics, ensuring every thread tells a story of 
               craftsmanship, culture, and timeless beauty.
             </p>
           </div>

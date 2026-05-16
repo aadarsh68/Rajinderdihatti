@@ -7,7 +7,7 @@ import { useWishlist } from '../context/WishlistContext'
 import { useAuth } from '../context/AuthContext'
 import styles from './Header.module.css'
 
-const navLinks = ['ALL SUITS', 'UNSTITCHED SUITS', 'COLLECTIONS', 'SALE!']
+const navLinks = ['ALL SUITS', 'NEW ARRIVALS', 'COLLECTIONS', 'SALE!']
 
 export default function Header() {
   const pathname = usePathname()
@@ -61,7 +61,7 @@ export default function Header() {
               <form onSubmit={handleSearch} className={styles.searchForm}>
                 <input
                   type="text"
-                  placeholder="Find your suit..."
+                  placeholder="Find your unstitched suit..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
@@ -72,7 +72,7 @@ export default function Header() {
           </div>
 
           <Link href="/" className={styles.logoWrap}>
-            <img src="/logo.png" alt="Mrigaank Tex Logo" className={styles.logoImg} />
+            <img src="/logo.png" alt="Mrigaank Tex" className={styles.logoImg} />
           </Link>
 
           <div className={styles.headerRight}>
@@ -106,7 +106,8 @@ export default function Header() {
         <nav className={styles.nav}>
           {navLinks.map(link => {
             let href = '/';
-            if (link === 'UNSTITCHED SUITS') href = '/unstitched-suits';
+            if (link === 'ALL SUITS') href = '/collections';
+            if (link === 'NEW ARRIVALS') href = '/collections?sort=newest';
             if (link === 'COLLECTIONS') href = '/collections';
             if (link === 'SALE!') href = '/sale';
             
@@ -133,7 +134,8 @@ export default function Header() {
         <nav className={styles.mobileNav}>
           {navLinks.map(link => {
             let href = '/';
-            if (link === 'UNSTITCHED SUITS') href = '/unstitched-suits';
+            if (link === 'ALL SUITS') href = '/collections';
+            if (link === 'NEW ARRIVALS') href = '/collections?sort=newest';
             if (link === 'COLLECTIONS') href = '/collections';
             if (link === 'SALE!') href = '/sale';
 

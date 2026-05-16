@@ -109,7 +109,7 @@ export default function RegisterPage() {
           <div className={styles.summaryCornerBL} /><div className={styles.summaryCornerBR} />
 
           <div className={styles.cardLogo}>
-            <h2 className={styles.cardLogoText}>RAJINDER DI HATTI</h2>
+            <img src="/logo.png" alt="Mrigaank Tex" className={styles.brandLogoImg} />
           </div>
 
           <h2 className={styles.sectionTitle}>
@@ -239,7 +239,8 @@ export default function RegisterPage() {
 
         <div className={styles.brandPanel}>
           <div className={styles.brandPanelInner}>
-            <h2 className={styles.brandTitleMain}>RAJINDER DI HATTI</h2>
+            <img src="/logo.png" alt="Mrigaank Tex" className={styles.brandLogoImg} />
+            <h2 className={styles.brandTitle}>MRIGAANK TEX</h2>
             <p className={styles.brandTagline}>Luxury Indian Ethnic Wear</p>
             <GoldDivider />
             <ul className={styles.brandPerks}>
