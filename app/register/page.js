@@ -108,6 +108,10 @@ export default function RegisterPage() {
           <div className={styles.summaryCornerTL} /><div className={styles.summaryCornerTR} />
           <div className={styles.summaryCornerBL} /><div className={styles.summaryCornerBR} />
 
+          <div className={styles.cardLogo}>
+            <h2 className={styles.cardLogoText}>RAJINDER DI HATTI</h2>
+          </div>
+
           <h2 className={styles.sectionTitle}>
             <span className={styles.sectionNum}>01</span> Personal Details
           </h2>
@@ -132,7 +136,7 @@ export default function RegisterPage() {
               <label className={styles.label}>Email Address *</label>
               <input name="email" type="email" value={form.email} onChange={handleChange}
                 className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-                placeholder="priya@example.com" />
+                placeholder="Enter your email" />
               {errors.email && <span className={styles.errorMsg}>{errors.email}</span>}
             </div>
             <div className={`${styles.formGroup} ${styles.fullWidth}`}>
@@ -232,6 +236,32 @@ export default function RegisterPage() {
             <Link href="/login" className={styles.altLink}>Sign in →</Link>
           </div>
         </form>
+
+        <div className={styles.brandPanel}>
+          <div className={styles.brandPanelInner}>
+            <h2 className={styles.brandTitleMain}>RAJINDER DI HATTI</h2>
+            <p className={styles.brandTagline}>Luxury Indian Ethnic Wear</p>
+            <GoldDivider />
+            <ul className={styles.brandPerks}>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Exclusive member discounts</span>
+              </li>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Order tracking & history</span>
+              </li>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Saved addresses & wishlist</span>
+              </li>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Early access to new collections</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

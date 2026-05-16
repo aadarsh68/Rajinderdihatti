@@ -4,7 +4,7 @@ const emailHost = process.env.EMAIL_HOST;
 const emailPort = parseInt(process.env.EMAIL_PORT || '587', 10);
 const emailUser = process.env.EMAIL_USER;
 const emailPass = process.env.EMAIL_PASSWORD;
-const emailFrom = process.env.EMAIL_FROM || 'no-reply@mrigaanktex.com';
+const emailFrom = process.env.EMAIL_FROM || 'mrigaanktextiles@gmail.com';
 
 const transportOptions = {
   host: emailHost,

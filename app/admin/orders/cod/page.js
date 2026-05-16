@@ -271,7 +271,7 @@ export default function AdminCodOrders() {
           
           <div class="footer-note">
             Thank you for shopping at Rajinder Di Hatti!<br/>
-            For support, please contact: adarshsahni8@gmail.com
+            For support, please contact: mrigaanktextiles@gmail.com
           </div>
         </div>
         <script>

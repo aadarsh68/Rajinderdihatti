@@ -75,6 +75,10 @@ export default function LoginPage() {
           <div className={styles.summaryCornerTL} /><div className={styles.summaryCornerTR} />
           <div className={styles.summaryCornerBL} /><div className={styles.summaryCornerBR} />
 
+          <div className={styles.cardLogo}>
+            <h2 className={styles.cardLogoText}>RAJINDER DI HATTI</h2>
+          </div>
+
           <div className={styles.formGroup}>
             <label className={styles.label}>Email Address</label>
             <input
@@ -83,7 +87,7 @@ export default function LoginPage() {
               value={form.email}
               onChange={handleChange}
               className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-              placeholder="priya@example.com"
+              placeholder="Enter your email"
             />
             {errors.email && <span className={styles.errorMsg}>{errors.email}</span>}
           </div>
@@ -163,20 +167,7 @@ export default function LoginPage() {
 
         <div className={styles.brandPanel}>
           <div className={styles.brandPanelInner}>
-            <svg viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg" className={styles.brandLogo}>
-              <defs>
-                <linearGradient id="panelGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#c9982a" />
-                  <stop offset="50%" stopColor="#e8b84b" />
-                  <stop offset="100%" stopColor="#a87020" />
-                </linearGradient>
-              </defs>
-              <path d="M40,30 Q20,10 5,18 Q15,28 40,30Z" fill="url(#panelGold)" />
-              <path d="M40,30 Q60,10 75,18 Q65,28 40,30Z" fill="url(#panelGold)" />
-              <text x="40" y="34" textAnchor="middle" fontSize="18" fontWeight="bold"
-                fill="url(#panelGold)" fontFamily="Montserrat, sans-serif">MT</text>
-            </svg>
-            <h2 className={styles.brandTitle}>MRIGAANK TEX</h2>
+            <h2 className={styles.brandTitleMain}>RAJINDER DI HATTI</h2>
             <p className={styles.brandTagline}>Luxury Indian Ethnic Wear</p>
             <GoldDivider />
             <ul className={styles.brandPerks}>

@@ -88,7 +88,7 @@ export default function ForgotPasswordPage() {
                   value={email}
                   onChange={(e) => { setEmail(e.target.value); if (error) setError(''); }}
                   className={`${styles.input} ${error ? styles.inputError : ''}`}
-                  placeholder="priya@example.com"
+                  placeholder="Enter your email"
                 />
                 {error && <span className={styles.errorMsg}>{error}</span>}
               </div>
@@ -122,6 +122,33 @@ export default function ForgotPasswordPage() {
               </div>
             </div>
           )}
+        </div>
+
+        <div className={styles.brandPanel}>
+          <div className={styles.brandPanelInner}>
+            <img src="/logo.png" alt="Mrigaank Tex Logo" className={styles.brandLogoImg} />
+            <h2 className={styles.brandTitle}>MRIGAANK TEX</h2>
+            <p className={styles.brandTagline}>Luxury Indian Ethnic Wear</p>
+            <GoldDivider />
+            <ul className={styles.brandPerks}>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Exclusive member discounts</span>
+              </li>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Order tracking & history</span>
+              </li>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Saved addresses & wishlist</span>
+              </li>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Early access to new collections</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

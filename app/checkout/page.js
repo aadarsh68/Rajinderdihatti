@@ -79,7 +79,7 @@ export default function CheckoutPage() {
     document.body.appendChild(script);
   }, []);
 
-  const states = ['Andhra Pradesh','Delhi','Gujarat','Haryana','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Punjab','Rajasthan','Tamil Nadu','Telangana','Uttar Pradesh','West Bengal'];
+  const states = ['Andhra Pradesh', 'Delhi', 'Gujarat', 'Haryana', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Punjab', 'Rajasthan', 'Tamil Nadu', 'Telangana', 'Uttar Pradesh', 'West Bengal'];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -107,7 +107,7 @@ export default function CheckoutPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId: currentOrderId })
       });
-      
+
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.error || 'Failed to create Razorpay order');
@@ -126,14 +126,14 @@ export default function CheckoutPage() {
           const patchRes = await fetch(`/api/orders/${currentOrderId}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              status: 'paid', 
+            body: JSON.stringify({
+              status: 'paid',
               paymentId: response.razorpay_payment_id,
               razorpayOrderId: response.razorpay_order_id
             }),
           });
           if (!patchRes.ok) throw new Error('Failed to confirm payment status');
-          
+
           setOrderId(currentOrderId);
           setOrderPlaced(true);
           clearCart();
@@ -167,15 +167,15 @@ export default function CheckoutPage() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          ...form, 
+        body: JSON.stringify({
+          ...form,
           shippingAddress: `${form.address}, ${form.apartment ? form.apartment + ', ' : ''}${form.city}, ${form.state} - ${form.pincode}`,
-          paymentMethod, 
+          paymentMethod,
           delivery, // Send delivery type so backend can calculate shipping
           email: form.email,
         }),
       });
-      
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Checkout failed');
 
@@ -190,9 +190,9 @@ export default function CheckoutPage() {
         clearCart();
         setIsSubmitting(false);
       }
-    } catch (err) { 
-      showAlert(err.message, 'Checkout Error', 'error'); 
-      setIsSubmitting(false); 
+    } catch (err) {
+      showAlert(err.message, 'Checkout Error', 'error');
+      setIsSubmitting(false);
     }
   };
 
@@ -213,7 +213,7 @@ export default function CheckoutPage() {
           </div>
           <h1 className={styles.confirmedTitle}>Order Placed!</h1>
           <p className={styles.confirmedDesc}>Thank you for choosing Mrigaank Tex. Your exquisite ethnic wear is now being prepared for its journey to you.</p>
-          
+
           <div className={styles.orderIdBadge}>
             <span className={styles.orderIdLabel}>Official Order ID</span>
             <span className={styles.orderIdVal}>{orderId}</span>
@@ -356,7 +356,7 @@ export default function CheckoutPage() {
               <div className={styles.summaryRow}>
                 <span>Shipping ({delivery === 'express' ? 'Express' : 'Standard'})</span>
                 <span className={(delivery === 'standard' && subtotal > 5000) ? styles.freeShipping : ''}>
-                  { delivery === 'express' ? '₹ 299' : (subtotal > 5000 ? 'FREE' : '₹ 149') }
+                  {delivery === 'express' ? '₹ 299' : (subtotal > 5000 ? 'FREE' : '₹ 149')}
                 </span>
               </div>
               {paymentMethod === 'cod' && (
@@ -366,8 +366,8 @@ export default function CheckoutPage() {
               <div className={`${styles.summaryRow} ${styles.totalRow}`}>
                 <span>Total</span>
                 <span>₹ {(
-                  subtotal + 
-                  (delivery === 'express' ? 299 : (subtotal > 5000 ? 0 : 149)) + 
+                  subtotal +
+                  (delivery === 'express' ? 299 : (subtotal > 5000 ? 0 : 149)) +
                   (paymentMethod === 'cod' ? 50 : 0)
                 ).toLocaleString('en-IN')}</span>
               </div>
