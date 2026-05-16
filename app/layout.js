@@ -27,14 +27,14 @@ const montserrat = Montserrat({
 export const metadata = {
   metadataBase: new URL('https://rajinderdihatti.com'),
   title: {
-    default: 'Mrigaank Tex — Premium Unstitched Suits',
-    template: '%s | Mrigaank Tex'
+    default: 'Rajinder Di Hatti — Premium Unstitched Suits',
+    template: '%s | Rajinder Di Hatti'
   },
-  description: 'Discover Mrigaank Tex. Curated collection of premium unstitched ethnic suits, showcasing Indian craftsmanship and elegance.',
-  keywords: ['unstitched suits', 'premium suits', 'ethnic fabrics', 'party wear unstitched', 'Indian fashion', 'Mrigaank Tex'],
-  authors: [{ name: 'Mrigaank Tex' }],
-  creator: 'Mrigaank Tex',
-  publisher: 'Mrigaank Tex',
+  description: 'Discover Rajinder Di Hatti. Curated collection of premium unstitched ethnic suits, showcasing Indian craftsmanship and elegance.',
+  keywords: ['unstitched suits', 'premium suits', 'ethnic fabrics', 'party wear unstitched', 'Indian fashion', 'Rajinder Di Hatti'],
+  authors: [{ name: 'Rajinder Di Hatti' }],
+  creator: 'Rajinder Di Hatti',
+  publisher: 'Rajinder Di Hatti',
   formatDetection: {
     email: false,
     address: false,

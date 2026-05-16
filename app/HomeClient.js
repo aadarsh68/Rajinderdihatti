@@ -76,7 +76,7 @@ export default function HomeClient({ initialProducts }) {
         <div className={styles.heroOverlay}></div>
         <div className={styles.heroContent}>
           <span className={styles.heroSubtitle}>Exquisite Craftsmanship</span>
-          <h1 className={styles.heroTitle}>MRIGAANK TEX</h1>
+          <h1 className={styles.heroTitle}>RAJINDER DI HATTI</h1>
           <button className={styles.heroBtn} onClick={() => document.getElementById('shop').scrollIntoView({behavior: 'smooth'})}>
             Explore Collection
           </button>
@@ -205,7 +205,7 @@ export default function HomeClient({ initialProducts }) {
           <div className={styles.storyContent}>
             <h2 className={styles.storyTitle}>Our Heritage</h2>
             <p className={styles.storyText}>
-              Mrigaank Tex represents a legacy of textile excellence. 
+              Rajinder Di Hatti represents a legacy of textile excellence. 
               We curate only the finest unstitched ethnic suit fabrics, ensuring every thread tells a story of 
               craftsmanship, culture, and timeless beauty.
             </p>
@@ -213,7 +213,7 @@ export default function HomeClient({ initialProducts }) {
         </section>
 
         <footer className={styles.footer}>
-          <p className={styles.footerText}>© 2026 Mrigaank Tex. All Rights Reserved.</p>
+          <p className={styles.footerText}>© 2026 Rajinder Di Hatti. All Rights Reserved.</p>
         </footer>
       </main>
     </div>

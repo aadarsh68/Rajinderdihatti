@@ -167,8 +167,7 @@ export default function LoginPage() {
 
         <div className={styles.brandPanel}>
           <div className={styles.brandPanelInner}>
-            <img src="/logo.png" alt="Mrigaank Tex" className={styles.brandLogoImg} />
-            <h2 className={styles.brandTitle}>MRIGAANK TEX</h2>
+            <h2 className={styles.brandTitleMain}>RAJINDER DI HATTI</h2>
             <p className={styles.brandTagline}>Luxury Indian Ethnic Wear</p>
             <GoldDivider />
             <ul className={styles.brandPerks}>
