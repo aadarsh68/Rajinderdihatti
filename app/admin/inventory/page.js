@@ -14,7 +14,7 @@ export default function AdminInventory() {
   const [editingId, setEditingId] = useState(null);
   const [editValues, setEditValues] = useState({});
   const [showAddModal, setShowAddModal] = useState(false);
-  const [newProduct, setNewProduct] = useState({ code: '', name: '', category: '', fabric: '', color: '', bg: '#c9982a', imageUrl: '', description: '', price: '', costPrice: '', stock: '', reorderLevel: 5, sku: '', status: 'active' });
+  const [newProduct, setNewProduct] = useState({ code: '', name: '', category: '', fabric: '', color: '', colorHex: '#c9982a', imageUrl: '', description: '', price: '', costPrice: '', stock: '', reorderLevel: 5, sku: '', status: 'active' });
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [toast, setToast] = useState(null);
@@ -35,7 +35,7 @@ export default function AdminInventory() {
     onSuccess: () => {
       queryClient.invalidateQueries(['admin-products']);
       setShowAddModal(false);
-      setNewProduct({ code: '', name: '', category: '', fabric: '', color: '', bg: '#c9982a', imageUrl: '', description: '', price: '', costPrice: '', stock: '', reorderLevel: 5, sku: '', status: 'active' });
+      setNewProduct({ code: '', name: '', category: '', fabric: '', color: '', colorHex: '#c9982a', imageUrl: '', description: '', price: '', costPrice: '', stock: '', reorderLevel: 5, sku: '', status: 'active' });
       showToast('Product added successfully');
     }
   });
@@ -188,7 +188,7 @@ export default function AdminInventory() {
               <tr key={p.id} className={styles.tableRow}>
                 <td>
                   <div className={styles.productCell}>
-                    <div className={styles.productSwatch} style={{ background: p.bg }}>
+                    <div className={styles.productSwatch} style={{ background: p.colorHex || p.bg }}>
                       {p.imageUrl && <img src={p.imageUrl.split(',')[0]} alt="" className={styles.swatchImg} />}
                     </div>
                     <div className={styles.productMeta}>
@@ -321,6 +321,17 @@ export default function AdminInventory() {
                   <div className={styles.formField}>
                     <label>Stock *</label>
                     <input type="number" placeholder="10" value={newProduct.stock} onChange={e => setNewProduct({...newProduct, stock: parseInt(e.target.value) || ''})} />
+                  </div>
+                  <div className={styles.formField}>
+                    <label>Color Name</label>
+                    <input placeholder="Emerald Green, Ruby Red..." value={newProduct.color} onChange={e => setNewProduct({...newProduct, color: e.target.value})} />
+                  </div>
+                  <div className={styles.formField}>
+                    <label>Swatch Color</label>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                      <input type="color" value={newProduct.colorHex} onChange={e => setNewProduct({...newProduct, colorHex: e.target.value})} style={{ width: '40px', height: '40px', padding: '0', border: 'none', borderRadius: '4px', cursor: 'pointer' }} />
+                      <input type="text" value={newProduct.colorHex} onChange={e => setNewProduct({...newProduct, colorHex: e.target.value})} style={{ flex: 1 }} placeholder="#000000" />
+                    </div>
                   </div>
                   <div className={`${styles.formField} ${styles.modalRightColumnFull}`}>
                     <label>Description</label>

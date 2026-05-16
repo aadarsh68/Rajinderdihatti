@@ -4,7 +4,6 @@ import { useCart } from '../context/CartContext';
 import { ProductSwatch } from '../components/ProductSwatch';
 import styles from './page.module.css';
 
-const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 function GoldDivider() {
   return (
@@ -17,7 +16,7 @@ function GoldDivider() {
 }
 
 export default function CartPage() {
-  const { cartItems, removeFromCart, updateQty, updateSize, subtotal, shipping, total, itemCount } = useCart();
+  const { cartItems, removeFromCart, updateQty, subtotal, shipping, total, itemCount } = useCart();
 
   if (cartItems.length === 0) {
     return (
@@ -58,10 +57,14 @@ export default function CartPage() {
           {cartItems.map((item, idx) => (
             <div key={item.id} className={styles.cartItem}
               style={{ animationDelay: `${idx * 0.08}s` }}>
-              {/* Swatch */}
+              {/* Product Image or Swatch Fallback */}
               <div className={styles.itemSwatch}>
-                <div className={styles.swatchFrame}>
-                  <ProductSwatch color={item.color} bg={item.bg} size={90} />
+                <div className={styles.swatchFrame} style={{ background: item.colorHex || item.bg || '#f5efe4' }}>
+                  {item.imageUrl ? (
+                    <img src={item.imageUrl.split(',')[0]} alt={item.name} className={styles.itemImg} />
+                  ) : (
+                    <ProductSwatch color={item.color} bg={item.colorHex || item.bg} size={90} />
+                  )}
                 </div>
               </div>
 
@@ -85,19 +88,6 @@ export default function CartPage() {
                 </div>
 
                 <div className={styles.itemControls}>
-                  {/* Size */}
-                  <div className={styles.sizeWrap}>
-                    <span className={styles.controlLabel}>Size</span>
-                    <div className={styles.sizeGrid}>
-                      {SIZES.map(s => (
-                        <button key={s}
-                          className={`${styles.sizeBtn} ${item.size === s ? styles.sizeBtnActive : ''}`}
-                          onClick={() => updateSize(item.id, s)}>
-                          {s}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
 
                   {/* Qty + Price */}
                   <div className={styles.qtyPriceRow}>

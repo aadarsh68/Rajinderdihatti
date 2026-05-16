@@ -61,7 +61,7 @@ export default function AdminOrders() {
           <strong style="color: #1a1510;">${item.product.name}</strong><br/>
           <span style="font-size: 11px; color: #666;">
             Code: ${item.product.code || 'N/A'} ${item.product.sku ? '| SKU: ' + item.product.sku : ''}<br/>
-            Color: ${item.product.color || 'As shown'} | Size: ${item.product.size || 'Unstitched Suit'}
+            Color: ${item.product.color || 'As shown'}
           </span>
         </td>
         <td style="padding: 10px 0; text-align: center; font-size: 13px; font-weight: bold;">${item.quantity}</td>

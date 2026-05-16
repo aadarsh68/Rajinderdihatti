@@ -70,7 +70,7 @@ export function CartProvider({ children }) {
     setCartItems(prev => {
       const exists = prev.find(i => i.id === product.id);
       if (exists) return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
-      return [...prev, { ...product, qty: 1, size: 'M' }];
+      return [...prev, { ...product, qty: 1 }];
     });
   }, []);
 
@@ -87,9 +87,6 @@ export function CartProvider({ children }) {
     );
   }, []);
 
-  const updateSize = useCallback((id, size) => {
-    setCartItems(prev => prev.map(i => i.id === id ? { ...i, size } : i));
-  }, []);
 
   const clearCart = useCallback(() => setCartItems([]), []);
 
@@ -107,7 +104,7 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider value={{
-      cartItems, addToCart, removeFromCart, updateQty, updateSize,
+      cartItems, addToCart, removeFromCart, updateQty,
       clearCart, placeOrder, subtotal, shipping, total, itemCount,
       orderPlaced, orderId
     }}>

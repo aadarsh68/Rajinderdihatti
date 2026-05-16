@@ -199,6 +199,23 @@
 }
 .logoutBtn:hover { color: #c05030; background: rgba(192,80,48,0.05); }
 
+.adminBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #8b6914;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.adminBtn:hover { background: rgba(201,152,42,0.08); }
+
+
 .mainContent { min-width: 0; }
 
 .contentCard {

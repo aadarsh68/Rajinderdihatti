@@ -335,13 +335,17 @@ export default function CheckoutPage() {
             <div className={styles.summaryItems}>
               {cartItems.map(item => (
                 <div key={item.id} className={styles.summaryItem}>
-                  <div className={styles.summaryThumb}>
-                    <ProductSwatch color={item.color} bg={item.bg} size={44} />
+                  <div className={styles.summaryThumb} style={{ background: item.colorHex || item.bg || '#f5efe4' }}>
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl.split(',')[0]} alt={item.name} className={styles.summaryImg} />
+                    ) : (
+                      <ProductSwatch color={item.color} bg={item.colorHex || item.bg} size={44} />
+                    )}
                     <span className={styles.qtyBadge}>{item.qty}</span>
                   </div>
                   <div className={styles.summaryItemInfo}>
                     <span className={styles.summaryItemName}>{item.name}</span>
-                    <span className={styles.summaryItemSize}>Size: {item.size}</span>
+
                   </div>
                   <span className={styles.summaryItemPrice}>₹ {(item.price * item.qty).toLocaleString('en-IN')}</span>
                 </div>

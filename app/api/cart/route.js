@@ -27,7 +27,6 @@ export async function GET() {
         bg: i.product.colorHex,
         color: i.product.color,
         qty: i.quantity,
-        size: 'M', // Size isn't in DB yet, defaulting
       })),
     });
   } catch (error) {
