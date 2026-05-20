@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useUI } from '../../context/UIContext';
 import styles from '../page.module.css';
 
-const CATEGORIES = ['All', 'Unstitched Suits', 'Accessories'];
+const CATEGORIES = ['All', 'Cotton Suits', 'Maheshwari Suits', 'Organza Suits', 'Maslin Suits', 'Jorget Suits', 'Chanderi Suits', 'Silk Suits', 'Chinon Suits', 'Crepe Suits', 'Jaipuri Suits', 'All Unstitched Suits'];
 
 export default function AdminInventory() {
   const queryClient = useQueryClient();
@@ -132,8 +132,8 @@ export default function AdminInventory() {
   const filtered = inventory.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.code.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
     let matchesCategory = categoryFilter === 'All' || p.category === categoryFilter;
-    if (categoryFilter === 'Unstitched Suits') {
-      matchesCategory = p.category?.toLowerCase() === 'unstitched suits' || p.category?.toLowerCase() === 'unstitched' || p.category?.toLowerCase() === 'suit fabric';
+    if (categoryFilter === 'All Unstitched Suits') {
+      matchesCategory = p.category?.toLowerCase() === 'all unstitched suits' || p.category?.toLowerCase() === 'unstitched suits' || p.category?.toLowerCase() === 'unstitched' || p.category?.toLowerCase() === 'suit fabric';
     }
     return matchesSearch && matchesCategory;
   });
@@ -193,7 +193,7 @@ export default function AdminInventory() {
                     </div>
                     <div className={styles.productMeta}>
                       {editingId === p.id ? (
-                        <input className={styles.inlineInput} value={editValues.name} onChange={e => setEditValues({...editValues, name: e.target.value})} />
+                        <input className={styles.inlineInput} value={editValues.name} onChange={e => setEditValues({ ...editValues, name: e.target.value })} />
                       ) : (
                         <span className={styles.productName}>{p.name}</span>
                       )}
@@ -201,18 +201,57 @@ export default function AdminInventory() {
                     </div>
                   </div>
                 </td>
-                <td className={styles.codeCell}>{p.sku || 'N/A'}<br/><small>{p.code}</small></td>
-                <td>{p.category}</td>
+                <td className={styles.codeCell}>
+                  {editingId === p.id ? (
+                    <input
+                      className={styles.inlineInput}
+                      value={editValues.sku || ''}
+                      onChange={e => setEditValues({ ...editValues, sku: e.target.value, code: e.target.value })}
+                      style={{ width: '100px' }}
+                    />
+                  ) : (
+                    <>
+                      {p.sku || 'N/A'}
+                      <br />
+                      <small>{p.code}</small>
+                    </>
+                  )}
+                </td>
+                <td>
+                  {editingId === p.id ? (
+                    <select
+                      className={styles.inlineInput}
+                      value={editValues.category || ''}
+                      onChange={e => setEditValues({ ...editValues, category: e.target.value })}
+                      style={{ padding: '4px 6px', height: 'auto', border: '1px solid #c9982a', borderRadius: '4px', background: 'white' }}
+                    >
+                      <option value="" disabled>Select Category</option>
+                      <option value="Cotton Suits">Cotton Suits</option>
+                      <option value="Maheshwari Suits">Maheshwari Suits</option>
+                      <option value="Organza Suits">Organza Suits</option>
+                      <option value="Maslin Suits">Maslin Suits</option>
+                      <option value="Jorget Suits">Jorget Suits</option>
+                      <option value="Chanderi Suits">Chanderi Suits</option>
+                      <option value="Silk Suits">Silk Suits</option>
+                      <option value="Chinon Suits">Chinon Suits</option>
+                      <option value="Crepe Suits">Crepe Suits</option>
+                      <option value="Jaipuri Suits">Jaipuri Suits</option>
+                      <option value="All Unstitched Suits">All Unstitched Suits</option>
+                    </select>
+                  ) : (
+                    p.category
+                  )}
+                </td>
                 <td className={styles.priceCell}>
                   {editingId === p.id ? (
-                    <input className={styles.inlineInput} value={editValues.price} onChange={e => setEditValues({...editValues, price: e.target.value})} style={{ width: '80px' }} />
+                    <input className={styles.inlineInput} value={editValues.price} onChange={e => setEditValues({ ...editValues, price: e.target.value })} style={{ width: '80px' }} />
                   ) : (
                     `₹${p.price.toLocaleString('en-IN')}`
                   )}
                 </td>
                 <td>
                   {editingId === p.id ? (
-                    <input className={styles.inlineInput} type="number" value={editValues.stock} onChange={e => setEditValues({...editValues, stock: parseInt(e.target.value)})} style={{ width: '60px' }} />
+                    <input className={styles.inlineInput} type="number" value={editValues.stock} onChange={e => setEditValues({ ...editValues, stock: parseInt(e.target.value) })} style={{ width: '60px' }} />
                   ) : (
                     <span className={`${styles.stockBadge} ${p.stock === 0 ? styles.stockOut : p.stock <= (p.reorderLevel || 5) ? styles.stockLow : styles.stockOk}`}>
                       {p.stock}
@@ -300,42 +339,52 @@ export default function AdminInventory() {
                 <div className={styles.modalRightColumn}>
                   <div className={styles.formField}>
                     <label>SKU Code *</label>
-                    <input placeholder="MT-101" value={newProduct.code} onChange={e => setNewProduct({...newProduct, code: e.target.value, sku: e.target.value})} />
+                    <input placeholder="MT-101" value={newProduct.code} onChange={e => setNewProduct({ ...newProduct, code: e.target.value, sku: e.target.value })} />
                   </div>
                   <div className={styles.formField}>
                     <label>Product Name *</label>
-                    <input placeholder="Royal Silk Sherwani" value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} />
+                    <input placeholder="Royal Silk Sherwani" value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} />
                   </div>
                   <div className={styles.formField}>
                     <label>Category</label>
-                    <input placeholder="Enter Category" value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} />
+                    <select
+                      value={newProduct.category}
+                      onChange={e => setNewProduct({ ...newProduct, category: e.target.value })}
+                    >
+                      <option value="" disabled>Select Category</option>
+                      <option value="Cotton Suits">Cotton Suits</option>
+                      <option value="Maheshwari Suits">Maheshwari Suits</option>
+                      <option value="Organza Suits">Organza Suits</option>
+                      <option value="Maslin Suits">Maslin Suits</option>
+                      <option value="Jorget Suits">Jorget Suits</option>
+                      <option value="Chanderi Suits">Chanderi Suits</option>
+                      <option value="Silk Suits">Silk Suits</option>
+                      <option value="Chinon Suits">Chinon Suits</option>
+                      <option value="Crepe Suits">Crepe Suits</option>
+                      <option value="Jaipuri Suits">Jaipuri Suits</option>
+                      <option value="All Unstitched Suits">All Unstitched Suits</option>
+                    </select>
                   </div>
                   <div className={styles.formField}>
                     <label>Fabric</label>
-                    <input placeholder="Silk, Cotton, etc." value={newProduct.fabric} onChange={e => setNewProduct({...newProduct, fabric: e.target.value})} />
+                    <input placeholder="Silk, Cotton, etc." value={newProduct.fabric} onChange={e => setNewProduct({ ...newProduct, fabric: e.target.value })} />
                   </div>
                   <div className={styles.formField}>
                     <label>Price (₹) *</label>
-                    <input type="number" placeholder="4999" value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: parseFloat(e.target.value) || ''})} />
+                    <input type="number" placeholder="4999" value={newProduct.price} onChange={e => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) || '' })} />
                   </div>
                   <div className={styles.formField}>
                     <label>Stock *</label>
-                    <input type="number" placeholder="10" value={newProduct.stock} onChange={e => setNewProduct({...newProduct, stock: parseInt(e.target.value) || ''})} />
+                    <input type="number" placeholder="10" value={newProduct.stock} onChange={e => setNewProduct({ ...newProduct, stock: parseInt(e.target.value) || '' })} />
                   </div>
                   <div className={styles.formField}>
                     <label>Color Name</label>
-                    <input placeholder="Emerald Green, Ruby Red..." value={newProduct.color} onChange={e => setNewProduct({...newProduct, color: e.target.value})} />
+                    <input placeholder="Emerald Green, Ruby Red..." value={newProduct.color} onChange={e => setNewProduct({ ...newProduct, color: e.target.value })} />
                   </div>
-                  <div className={styles.formField}>
-                    <label>Swatch Color</label>
-                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                      <input type="color" value={newProduct.colorHex} onChange={e => setNewProduct({...newProduct, colorHex: e.target.value})} style={{ width: '40px', height: '40px', padding: '0', border: 'none', borderRadius: '4px', cursor: 'pointer' }} />
-                      <input type="text" value={newProduct.colorHex} onChange={e => setNewProduct({...newProduct, colorHex: e.target.value})} style={{ flex: 1 }} placeholder="#000000" />
-                    </div>
-                  </div>
+
                   <div className={`${styles.formField} ${styles.modalRightColumnFull}`}>
                     <label>Description</label>
-                    <textarea className={styles.textarea} placeholder="Describe the product details..." value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})} rows={3}></textarea>
+                    <textarea className={styles.textarea} placeholder="Describe the product details..." value={newProduct.description} onChange={e => setNewProduct({ ...newProduct, description: e.target.value })} rows={3}></textarea>
                   </div>
                 </div>
               </div>

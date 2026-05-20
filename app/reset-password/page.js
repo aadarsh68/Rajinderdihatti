@@ -24,6 +24,7 @@ function ResetPasswordContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +34,7 @@ function ResetPasswordContent() {
 
   useEffect(() => {
     setEmail(searchParams.get('email') || '');
+    setOtp(searchParams.get('otp') || '');
   }, [searchParams]);
 
   const validate = () => {
@@ -53,7 +55,7 @@ function ResetPasswordContent() {
       const response = await fetch('/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, otp, newPassword: password }),
       });
 
       if (!response.ok) {

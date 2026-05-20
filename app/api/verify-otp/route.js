@@ -7,7 +7,7 @@ function buildError(message, status = 400) {
 
 export async function POST(request) {
   const body = await request.json();
-  const { email, otp } = body || {};
+  const { email, otp, preserve } = body || {};
 
   if (!email || !otp) {
     return buildError('Email and OTP are required.');
@@ -35,11 +35,13 @@ export async function POST(request) {
       return buildError('OTP has expired.');
     }
 
-    // Clear OTP on successful verification
-    await prisma.user.update({
-      where: { email },
-      data: { otp: null, otpExpiry: null },
-    });
+    // Clear OTP on successful verification unless preserved (for reset flow)
+    if (!preserve) {
+      await prisma.user.update({
+        where: { email },
+        data: { otp: null, otpExpiry: null },
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

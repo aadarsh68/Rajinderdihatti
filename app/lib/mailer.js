@@ -28,9 +28,17 @@ export async function sendOtpEmail(to, otp) {
   const message = {
     from: emailFrom,
     to,
-    subject: 'Your Mrigaank Tex OTP Code',
+    subject: 'Your Rajinder Di Hatti OTP Code',
     text: `Your OTP code is ${otp}. It expires in 10 minutes.`,
-    html: `<p>Your OTP code is <strong>${otp}</strong>.</p><p>This code expires in 10 minutes.</p>`,
+    html: `
+      <div style="font-family: serif; color: #3a2e1e; padding: 20px; background: #faf5ec; border: 1px solid #c9982a;">
+        <h2 style="color: #c9982a; letter-spacing: 2px;">RAJINDER DI HATTI</h2>
+        <p style="font-size: 16px;">Your verification code is: <strong style="font-size: 24px; color: #3a2e1e;">${otp}</strong></p>
+        <p style="font-size: 12px; color: #9a8060;">This code is valid for 10 minutes. Please do not share this code with anyone.</p>
+        <hr style="border: 0; border-top: 1px solid rgba(201,152,42,0.2); margin: 20px 0;">
+        <p style="font-size: 10px; color: #b0a080;">© 2026 Rajinder Di Hatti. Luxury Indian Ethnic Wear.</p>
+      </div>
+    `,
   };
 
   try {

@@ -19,7 +19,9 @@ export async function GET(request) {
         where.OR = [
           { category: { equals: 'unstitched', mode: 'insensitive' } },
           { category: { equals: 'Unstitched Suits', mode: 'insensitive' } },
-          { category: { equals: 'Suit Fabric', mode: 'insensitive' } }
+          { category: { equals: 'All Unstitched Suits', mode: 'insensitive' } },
+          { category: { equals: 'Suit Fabric', mode: 'insensitive' } },
+          { category: { contains: 'Suits', mode: 'insensitive' } }
         ];
       } else {
         where.status = { in: ['active', 'sale'] };

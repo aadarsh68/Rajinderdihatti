@@ -80,7 +80,7 @@ function VerifyOtpContent() {
       const response = await fetch('/api/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp: code }),
+        body: JSON.stringify({ email, otp: code, preserve: type === 'reset' }),
       });
 
       if (!response.ok) {
@@ -90,7 +90,7 @@ function VerifyOtpContent() {
       }
 
       setVerified(true);
-      const nextPath = type === 'reset' ? `/reset-password?email=${encodeURIComponent(email)}` : '/profile';
+      const nextPath = type === 'reset' ? `/reset-password?email=${encodeURIComponent(email)}&otp=${code}` : '/profile';
       setTimeout(() => router.push(nextPath), 1800);
     } catch (error) {
       setError('Unable to verify OTP. Please try again.');
@@ -212,6 +212,32 @@ function VerifyOtpContent() {
               </div>
             </div>
           )}
+        </div>
+
+        <div className={styles.brandPanel}>
+          <div className={styles.brandPanelInner}>
+            <h2 className={styles.brandTitleMain}>RAJINDER DI HATTI</h2>
+            <p className={styles.brandTagline}>Luxury Indian Ethnic Wear</p>
+            <GoldDivider />
+            <ul className={styles.brandPerks}>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Exclusive member discounts</span>
+              </li>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Order tracking & history</span>
+              </li>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Saved addresses & wishlist</span>
+              </li>
+              <li className={styles.brandPerk}>
+                <span className={styles.perkIcon}>✦</span>
+                <span>Early access to new collections</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
