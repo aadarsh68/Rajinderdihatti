@@ -122,17 +122,16 @@ export default function CheckoutPage() {
         description: "Ethnic Wear Purchase",
         order_id: rzpOrderId,
         handler: async (response) => {
-          // Update order status in DB
+          // Store payment IDs only - webhook will update status after verification
           const patchRes = await fetch(`/api/orders/${currentOrderId}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              status: 'paid',
               paymentId: response.razorpay_payment_id,
               razorpayOrderId: response.razorpay_order_id
             }),
           });
-          if (!patchRes.ok) throw new Error('Failed to confirm payment status');
+          if (!patchRes.ok) throw new Error('Failed to store payment details');
 
           setOrderId(currentOrderId);
           setOrderPlaced(true);
