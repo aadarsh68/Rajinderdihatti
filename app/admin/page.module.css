@@ -393,6 +393,36 @@
   gap: 20px;
 }
 
+.dashboardNotification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  margin: 0 40px 20px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff9eb 0%, #fff1d9 100%);
+  border: 1px solid rgba(217, 156, 41, 0.25);
+  box-shadow: 0 10px 30px rgba(201, 152, 42, 0.15);
+  color: #5f4a17;
+}
+
+.notificationClose {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(201, 152, 42, 0.12);
+  color: #5f4a17;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.notificationClose:hover {
+  background: rgba(201, 152, 42, 0.2);
+}
+
 .dashCard {
   background: linear-gradient(135deg, white 0%, #fafaf9 100%);
   border: 1px solid rgba(201, 152, 42, 0.15);

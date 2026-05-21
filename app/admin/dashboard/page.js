@@ -1,8 +1,11 @@
 'use client';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import styles from '../page.module.css';
 
 export default function AdminDashboard() {
+  const [showNotification, setShowNotification] = useState(true);
+
   const { data: prodData, isLoading: loadingProd } = useQuery({
     queryKey: ['admin-products'],
     queryFn: () => fetch('/api/admin/products').then(res => res.json())
@@ -28,6 +31,8 @@ export default function AdminDashboard() {
     pendingOrders: orders.filter(o => o.status === 'pending').length
   };
 
+  const alertCount = stats.lowStock + stats.outOfStock;
+
   const stockStatus = (stock, reorder) => {
     if (stock === 0) return 'out';
     if (stock <= (reorder || 5)) return 'low';
@@ -35,8 +40,19 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className={styles.dashGrid}>
-      <div className={styles.dashCard}>
+    <>
+      {showNotification && (
+        <div className={styles.dashboardNotification}>
+          <div>
+            <strong>Dashboard Alert:</strong> {alertCount} stock alert{alertCount === 1 ? '' : 's'} and {stats.pendingOrders} pending order{stats.pendingOrders === 1 ? '' : 's'}.
+          </div>
+          <button className={styles.notificationClose} onClick={() => setShowNotification(false)} aria-label="Dismiss notification">
+            ✕
+          </button>
+        </div>
+      )}
+      <div className={styles.dashGrid}>
+        <div className={styles.dashCard}>
         <div className={styles.cardHeader}>
           <div className={styles.cardIcon} style={{ background: 'rgba(201, 152, 42, 0.12)', color: '#c9982a' }}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>

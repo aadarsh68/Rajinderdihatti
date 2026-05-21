@@ -21,12 +21,15 @@ This project uses PostgreSQL with Prisma ORM.
 
 3. Update `.env` with your database URL and any required secrets:
    ```
-   DATABASE_URL="postgresql://username:password@localhost:5432/mrigaank_tex?schema=public"
+   # If your database password contains '@', encode it as '%40'.
+   DATABASE_URL="postgresql://username:password%40withat@localhost:5432/mrigaank_tex?schema=public"
    NEXTAUTH_SECRET="your-secret"
    RAZORPAY_KEY_ID="rzp_test_your_key_id"
    RAZORPAY_KEY_SECRET="your_secret_here"
    RAZORPAY_WEBHOOK_SECRET="your_webhook_secret"
    ```
+
+   The Razorpay webhook endpoint is exposed at `/api/webhook/razorpay`.
 
 3. Run database migrations:
    ```bash
