@@ -50,7 +50,7 @@ export default function AdminOrders() {
       showToast('Popups are blocked! Please allow popups for this site.', 'error');
       return;
     }
-    
+
     const orderDate = new Date(order.createdAt).toLocaleDateString('en-IN', {
       year: 'numeric', month: 'long', day: 'numeric'
     });
@@ -287,13 +287,13 @@ export default function AdminOrders() {
       </body>
       </html>
     `;
-    
+
     printWindow.document.write(htmlContent);
     printWindow.document.close();
   };
 
-  const filtered = orders.filter(o => 
-    o.id.toLowerCase().includes(search.toLowerCase()) || 
+  const filtered = orders.filter(o =>
+    o.id.toLowerCase().includes(search.toLowerCase()) ||
     o.user?.name?.toLowerCase().includes(search.toLowerCase()) ||
     o.phone?.includes(search)
   );
@@ -352,8 +352,8 @@ export default function AdminOrders() {
                   </span>
                 </td>
                 <td>
-                  <button className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '11px' }} onClick={() => { 
-                    setSelectedOrder(o); 
+                  <button className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '11px' }} onClick={() => {
+                    setSelectedOrder(o);
                     setTrackingUrlInput(o.trackingUrl || '');
                     setTempStatus(o.status);
                   }}>Details</button>
@@ -379,9 +379,9 @@ export default function AdminOrders() {
                     <p><strong>Name:</strong> {selectedOrder.user?.name}</p>
                     <p><strong>Email:</strong> {selectedOrder.email || selectedOrder.user?.email}</p>
                     <p><strong>Phone:</strong> {selectedOrder.phone}</p>
-                    <p style={{ marginTop: '10px' }}><strong>Shipping Address:</strong><br/>{selectedOrder.shippingAddress}</p>
+                    <p style={{ marginTop: '10px' }}><strong>Shipping Address:</strong><br />{selectedOrder.shippingAddress}</p>
                   </div>
-                  
+
                   <h3 style={{ fontSize: '14px', textTransform: 'uppercase', margin: '20px 0 15px', color: '#8b6914' }}>Payment Status</h3>
                   <div style={{ background: '#fafafa', padding: '15px', borderRadius: '8px' }}>
                     <p><strong>Method:</strong> <span style={{ textTransform: 'uppercase' }}>{selectedOrder.paymentMethod}</span></p>
@@ -389,13 +389,13 @@ export default function AdminOrders() {
                     {selectedOrder.paymentId && <p><strong>Payment ID:</strong> {selectedOrder.paymentId}</p>}
                     {selectedOrder.trackingUrl && (
                       <p style={{ marginTop: '10px', color: '#8b6914' }}>
-                        <strong>Tracking URL:</strong><br/>
+                        <strong>Tracking URL:</strong><br />
                         <a href={selectedOrder.trackingUrl} target="_blank" rel="noreferrer" style={{ fontSize: '11px', textDecoration: 'underline' }}>{selectedOrder.trackingUrl}</a>
                       </p>
                     )}
                   </div>
                 </div>
-                
+
                 <div>
                   <h3 style={{ fontSize: '14px', textTransform: 'uppercase', marginBottom: '15px', color: '#8b6914' }}>Items</h3>
                   <div style={{ maxHeight: '300px', overflowY: 'auto', marginBottom: '20px' }}>
@@ -411,7 +411,7 @@ export default function AdminOrders() {
                       </div>
                     ))}
                   </div>
-                  
+
                   <div style={{ background: '#1a1510', color: '#e8c870', padding: '20px', borderRadius: '8px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px' }}>
                       <span>Subtotal</span><span>₹{(selectedOrder.total - (selectedOrder.shippingPrice || 0) - (selectedOrder.handlingFee || 0)).toLocaleString('en-IN')}</span>
@@ -434,8 +434,8 @@ export default function AdminOrders() {
             <div className={styles.modalFooter}>
               <div style={{ flex: 1, display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <label style={{ fontSize: '12px', fontWeight: 700 }}>ORDER STATUS:</label>
-                <select 
-                  value={tempStatus} 
+                <select
+                  value={tempStatus}
                   onChange={(e) => setTempStatus(e.target.value)}
                   style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ddd', fontSize: '13px' }}
                 >
@@ -447,7 +447,7 @@ export default function AdminOrders() {
                   <option value="cancelled">Cancelled</option>
                 </select>
                 {tempStatus === 'shipped' && (
-                  <input 
+                  <input
                     placeholder="Enter Delivery/Tracking URL..."
                     value={trackingUrlInput}
                     onChange={(e) => setTrackingUrlInput(e.target.value)}
@@ -455,26 +455,26 @@ export default function AdminOrders() {
                     style={{ flex: 1, minWidth: '200px' }}
                   />
                 )}
-                <button 
-                  className={styles.btnPrimary} 
+                <button
+                  className={styles.btnPrimary}
                   style={{ padding: '8px 20px', fontSize: '12px' }}
                   onClick={() => updateOrderStatus(selectedOrder.id, tempStatus)}
                 >
                   Save Changes
                 </button>
               </div>
-              <button 
-                className={styles.btnPrimary} 
-                style={{ 
-                  padding: '10px 18px', 
-                  fontSize: '12px', 
-                  background: 'linear-gradient(135deg, #8b6914, #b58d22)', 
-                  borderColor: '#8b6914', 
-                  color: '#fff', 
+              <button
+                className={styles.btnPrimary}
+                style={{
+                  padding: '10px 18px',
+                  fontSize: '12px',
+                  background: 'linear-gradient(135deg, #8b6914, #b58d22)',
+                  borderColor: '#8b6914',
+                  color: '#fff',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px'
-                }} 
+                }}
                 onClick={() => handlePrintPackingSlip(selectedOrder)}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>

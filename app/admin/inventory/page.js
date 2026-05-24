@@ -4,7 +4,104 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useUI } from '../../context/UIContext';
 import styles from '../page.module.css';
 
-const CATEGORIES = ['All', 'Cotton Suits', 'Maheshwari Suits', 'Organza Suits', 'Maslin Suits', 'Jorget Suits', 'Chanderi Suits', 'Silk Suits', 'Chinon Suits', 'Crepe Suits', 'Jaipuri Suits', 'All Unstitched Suits'];
+const CATEGORIES = [
+  'All',
+  'MT Cotton Suits',
+  'MT Maheshwari Suits',
+  'MT Organza Suits',
+  'MT Maslin Suits',
+  'MT Jorget Suits',
+  'MT Chanderi Suits',
+  'MT Silk Suits',
+  'MT Chinon Suits',
+  'MT Crepe Suits',
+  'MT Jaipuri Suits',
+  'MT All Unstitched Suits',
+  'MT MULL CHANDERI',
+  'MT LINEN SHIMMER',
+  'MT KOTA SUITS',
+  'MT Pure jamdani'
+];
+
+function CustomSelect({ value, onChange, options, placeholder = "Select Category", style = {}, buttonStyle = {} }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div style={{ position: 'relative', width: '100%', ...style }}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          width: '100%',
+          padding: '10px 14px',
+          border: '1px solid #c9982a',
+          borderRadius: '8px',
+          background: 'white',
+          cursor: 'pointer',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: '13px',
+          fontFamily: 'inherit',
+          color: value ? '#1a1510' : '#888',
+          textAlign: 'left',
+          boxSizing: 'border-box',
+          ...buttonStyle
+        }}
+      >
+        <span>{value || placeholder}</span>
+        <span style={{ fontSize: '10px', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s', marginLeft: '8px' }}>▼</span>
+      </button>
+      {isOpen && (
+        <>
+          <div
+            onClick={() => setIsOpen(false)}
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              marginTop: '4px',
+              border: '1px solid #c9982a',
+              borderRadius: '8px',
+              background: 'white',
+              maxHeight: '200px',
+              overflowY: 'auto',
+              zIndex: 10000,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+            }}
+          >
+            {options.map(opt => (
+              <div
+                key={opt}
+                onClick={() => {
+                  onChange(opt);
+                  setIsOpen(false);
+                }}
+                style={{
+                  padding: '10px 14px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  background: value === opt ? '#fdfaf5' : 'white',
+                  color: value === opt ? '#8b6914' : '#1a1510',
+                  borderBottom: '1px solid #fafafa',
+                  boxSizing: 'border-box'
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = '#fefcf9'}
+                onMouseLeave={e => e.currentTarget.style.background = value === opt ? '#fdfaf5' : 'white'}
+              >
+                {opt}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 export default function AdminInventory() {
   const queryClient = useQueryClient();
@@ -132,8 +229,8 @@ export default function AdminInventory() {
   const filtered = inventory.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.code.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
     let matchesCategory = categoryFilter === 'All' || p.category === categoryFilter;
-    if (categoryFilter === 'All Unstitched Suits') {
-      matchesCategory = p.category?.toLowerCase() === 'all unstitched suits' || p.category?.toLowerCase() === 'unstitched suits' || p.category?.toLowerCase() === 'unstitched' || p.category?.toLowerCase() === 'suit fabric';
+    if (categoryFilter === 'MT All Unstitched Suits' || categoryFilter === 'All Unstitched Suits') {
+      matchesCategory = p.category?.toLowerCase() === 'mt all unstitched suits' || p.category?.toLowerCase() === 'all unstitched suits' || p.category?.toLowerCase() === 'unstitched suits' || p.category?.toLowerCase() === 'unstitched' || p.category?.toLowerCase() === 'suit fabric';
     }
     return matchesSearch && matchesCategory;
   });
@@ -219,25 +316,13 @@ export default function AdminInventory() {
                 </td>
                 <td>
                   {editingId === p.id ? (
-                    <select
-                      className={styles.inlineInput}
+                    <CustomSelect
                       value={editValues.category || ''}
-                      onChange={e => setEditValues({ ...editValues, category: e.target.value })}
-                      style={{ padding: '4px 6px', height: 'auto', border: '1px solid #c9982a', borderRadius: '4px', background: 'white' }}
-                    >
-                      <option value="" disabled>Select Category</option>
-                      <option value="Cotton Suits">Cotton Suits</option>
-                      <option value="Maheshwari Suits">Maheshwari Suits</option>
-                      <option value="Organza Suits">Organza Suits</option>
-                      <option value="Maslin Suits">Maslin Suits</option>
-                      <option value="Jorget Suits">Jorget Suits</option>
-                      <option value="Chanderi Suits">Chanderi Suits</option>
-                      <option value="Silk Suits">Silk Suits</option>
-                      <option value="Chinon Suits">Chinon Suits</option>
-                      <option value="Crepe Suits">Crepe Suits</option>
-                      <option value="Jaipuri Suits">Jaipuri Suits</option>
-                      <option value="All Unstitched Suits">All Unstitched Suits</option>
-                    </select>
+                      onChange={val => setEditValues({ ...editValues, category: val })}
+                      options={CATEGORIES.filter(c => c !== 'All')}
+                      style={{ width: '170px' }}
+                      buttonStyle={{ padding: '6px 10px', borderRadius: '4px' }}
+                    />
                   ) : (
                     p.category
                   )}
@@ -347,23 +432,11 @@ export default function AdminInventory() {
                   </div>
                   <div className={styles.formField}>
                     <label>Category</label>
-                    <select
+                    <CustomSelect
                       value={newProduct.category}
-                      onChange={e => setNewProduct({ ...newProduct, category: e.target.value })}
-                    >
-                      <option value="" disabled>Select Category</option>
-                      <option value="Cotton Suits">Cotton Suits</option>
-                      <option value="Maheshwari Suits">Maheshwari Suits</option>
-                      <option value="Organza Suits">Organza Suits</option>
-                      <option value="Maslin Suits">Maslin Suits</option>
-                      <option value="Jorget Suits">Jorget Suits</option>
-                      <option value="Chanderi Suits">Chanderi Suits</option>
-                      <option value="Silk Suits">Silk Suits</option>
-                      <option value="Chinon Suits">Chinon Suits</option>
-                      <option value="Crepe Suits">Crepe Suits</option>
-                      <option value="Jaipuri Suits">Jaipuri Suits</option>
-                      <option value="All Unstitched Suits">All Unstitched Suits</option>
-                    </select>
+                      onChange={val => setNewProduct({ ...newProduct, category: val })}
+                      options={CATEGORIES.filter(c => c !== 'All')}
+                    />
                   </div>
                   <div className={styles.formField}>
                     <label>Fabric</label>
