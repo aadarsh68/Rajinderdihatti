@@ -119,12 +119,27 @@
 .announcementBar {
   background: #3a2e1e;
   border-bottom: 2px solid #8b6914;
-  color: #e8c870; text-align: center; padding: 12px 20px;
+  color: #e8c870; padding: 12px 0;
   font-family: var(--font-outfit), sans-serif;
   font-size: 10px; font-weight: 700; letter-spacing: 3px; position: relative; z-index: 1;
   text-transform: uppercase;
+  overflow: hidden;
+  width: 100%;
 }
-.announcementBar p { margin: 0; }
+.announcementTrack {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+.announcementTrack span {
+  padding: 0 45px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); }
+}
 
 /* ── Mobile & Responsive ── */
 .hamburger {

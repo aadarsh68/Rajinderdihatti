@@ -70,8 +70,11 @@ export default function ProductListClient({ products: initialProducts, title, su
             filteredProducts.map((product) => (
               <div key={product.id} className={styles.productCard}>
                 <div className={styles.productImgWrap}>
+                  {product.stock <= 0 && (
+                    <span className={styles.outOfStockTag}>Sold Out</span>
+                  )}
                   <Link href={`/product/${product.id}`}>
-                    <div className={styles.productImgInner} style={{background: product.colorHex || product.bg || '#fff'}}>
+                    <div className={`${styles.productImgInner} ${product.stock <= 0 ? styles.outOfStockImg : ''}`} style={{background: product.colorHex || product.bg || '#fff'}}>
                       {product.imageUrl ? (
                         <img src={product.imageUrl.split(',')[0]} alt={product.name} className={styles.productImg} />
                       ) : (
@@ -98,9 +101,15 @@ export default function ProductListClient({ products: initialProducts, title, su
                     <span className={styles.currencySymbol}>₹</span>
                     {product.price.toLocaleString('en-IN')}
                   </p>
-                  <button className={styles.addBtn} onClick={() => handleAddToCart(product)}>
-                    {added[product.id] ? "Added to Cart" : "Add to Cart"}
-                  </button>
+                  {product.stock > 0 ? (
+                    <button className={styles.addBtn} onClick={() => handleAddToCart(product)}>
+                      {added[product.id] ? "Added to Cart" : "Add to Cart"}
+                    </button>
+                  ) : (
+                    <button className={styles.addBtnDisabled} disabled>
+                      Out of Stock
+                    </button>
+                  )}
                 </div>
               </div>
             ))

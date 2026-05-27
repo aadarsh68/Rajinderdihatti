@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useCart } from './context/CartContext';
 import { useWishlist } from './context/WishlistContext';
@@ -48,6 +48,47 @@ export default function HomeClient({ initialProducts }) {
   const [sortBy, setSortBy] = useState('Date, new to old');
   const [added, setAdded] = useState({});
 
+  // Showroom Carousel Ref and Scroll Logic
+  const scrollContainerRef = useRef(null);
+
+  const slides = [
+    {
+      img: '/shop/shop1.jpg',
+      ratio: '741/1024',
+      title: 'Our Heritage Store',
+      subtitle: 'Rajinder Di Hatti at Chandni Chowk'
+    },
+    {
+      img: '/shop/shop2.jpg',
+      ratio: '1024/656',
+      title: 'Premium Fabrics',
+      subtitle: 'Fine unstitched suits & materials'
+    },
+    {
+      img: '/shop/shop3.jpg',
+      ratio: '1024/642',
+      title: 'Personalized Service',
+      subtitle: 'Dedicated counters for assistance'
+    },
+    {
+      img: '/shop/shop4.jpg',
+      ratio: '1024/674',
+      title: 'Bespoke Ambience',
+      subtitle: 'Comfortable showroom shopping'
+    }
+  ];
+
+  const handleScroll = (direction) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const scrollAmount = container.clientWidth * 0.75;
+    const targetScroll = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+    container.scrollTo({
+      left: targetScroll,
+      behavior: 'smooth'
+    });
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('search');
@@ -84,23 +125,67 @@ export default function HomeClient({ initialProducts }) {
       </section>
 
       <main className={styles.main}>
-        <section className={styles.collectionsSection}>
-          <span className={styles.sectionLabel}>Curated Styles</span>
-          <h2 className={styles.sectionTitle}>Featured Collections</h2>
-          <div className={styles.collectionsGrid}>
-            {[
-              { name: 'Daily Wear Suits', count: '120+ Styles', img: '/unstitched.png' },
-              { name: 'Party Wear Suits', count: '85+ Styles', img: '/party.png' },
-              { name: 'Bridal Unstitched', count: '40+ Styles', img: '/bridal.png' }
-            ].map(col => (
-              <div key={col.name} className={styles.collectionCard}>
-                <img src={col.img} alt={col.name} className={styles.collectionImg} />
-                <div className={styles.collectionOverlay}>
-                  <h3 className={styles.collectionName}>{col.name}</h3>
-                  <span className={styles.collectionCount}>{col.count}</span>
-                </div>
+        <section className={styles.showroomSection}>
+          <span className={styles.sectionLabel}>Discover Ambience</span>
+          <h2 className={styles.sectionTitle}>Our Boutique Showroom</h2>
+          
+          <div className={styles.showroomCarouselWrapper}>
+            {/* Navigation Arrows */}
+            <button 
+              className={`${styles.showroomCarouselArrow} ${styles.showroomCarouselArrowPrev}`}
+              onClick={() => handleScroll('left')}
+              aria-label="Scroll left"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button 
+              className={`${styles.showroomCarouselArrow} ${styles.showroomCarouselArrowNext}`}
+              onClick={() => handleScroll('right')}
+              aria-label="Scroll right"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+
+            {/* Scrollable Carousel Track */}
+            <div 
+              className={styles.showroomCarousel}
+              ref={scrollContainerRef}
+            >
+              <div className={styles.showroomTrack}>
+                {slides.map((slide, index) => (
+                  <div 
+                    key={index} 
+                    className={styles.showroomCard}
+                    style={{ aspectRatio: slide.ratio }}
+                  >
+                    <img 
+                      src={slide.img} 
+                      alt={slide.title} 
+                      className={styles.showroomCardImg} 
+                    />
+                    <div className={styles.showroomCardOverlay}>
+                      <h3 className={styles.showroomCardTitle}>{slide.title}</h3>
+                      <p className={styles.showroomCardSub}>{slide.subtitle}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* Social Handle below */}
+          <div className={styles.showroomSocial}>
+            <a 
+              href="https://www.instagram.com/ritu_arora_narang?igsh=MTFxODVrb2U5NnBkNg%3D%3D&utm_source=qr" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              @rajinderdihatti
+            </a>
           </div>
         </section>
 
@@ -114,8 +199,11 @@ export default function HomeClient({ initialProducts }) {
               {saleProducts.map((product, idx) => (
                 <div key={product.id} className={styles.productCard}>
                   <div className={styles.productImgWrap}>
+                    {product.stock <= 0 && (
+                      <span className={styles.outOfStockTag}>Sold Out</span>
+                    )}
                     <Link href={`/product/${product.id}`}>
-                      <div className={styles.productImgInner} style={{background: product.colorHex || product.bg || '#fff'}}>
+                      <div className={`${styles.productImgInner} ${product.stock <= 0 ? styles.outOfStockImg : ''}`} style={{background: product.colorHex || product.bg || '#fff'}}>
                         {product.imageUrl ? (
                           <img src={product.imageUrl.split(',')[0]} alt={product.name} className={styles.productImg} />
                         ) : (
@@ -142,9 +230,15 @@ export default function HomeClient({ initialProducts }) {
                       <span className={styles.currencySymbol}>₹</span>
                       {product.price.toLocaleString('en-IN')}
                     </p>
-                    <button className={styles.addBtn} onClick={() => handleAddToCart(product)}>
-                      {added[product.id] ? "Added to Cart" : "Add to Cart"}
-                    </button>
+                    {product.stock > 0 ? (
+                      <button className={styles.addBtn} onClick={() => handleAddToCart(product)}>
+                        {added[product.id] ? "Added to Cart" : "Add to Cart"}
+                      </button>
+                    ) : (
+                      <button className={styles.addBtnDisabled} disabled>
+                        Out of Stock
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -163,8 +257,11 @@ export default function HomeClient({ initialProducts }) {
           {filteredProducts.map((product, idx) => (
             <div key={product.id} className={styles.productCard}>
               <div className={styles.productImgWrap}>
+                {product.stock <= 0 && (
+                  <span className={styles.outOfStockTag}>Sold Out</span>
+                )}
                 <Link href={`/product/${product.id}`}>
-                  <div className={styles.productImgInner} style={{background: product.colorHex || product.bg || '#fff'}}>
+                  <div className={`${styles.productImgInner} ${product.stock <= 0 ? styles.outOfStockImg : ''}`} style={{background: product.colorHex || product.bg || '#fff'}}>
                     {product.imageUrl ? (
                       <img src={product.imageUrl.split(',')[0]} alt={product.name} className={styles.productImg} />
                     ) : (
@@ -191,9 +288,15 @@ export default function HomeClient({ initialProducts }) {
                   <span className={styles.currencySymbol}>₹</span>
                   {product.price.toLocaleString('en-IN')}
                 </p>
-                <button className={styles.addBtn} onClick={() => handleAddToCart(product)}>
-                  {added[product.id] ? "Added to Cart" : "Add to Cart"}
-                </button>
+                {product.stock > 0 ? (
+                  <button className={styles.addBtn} onClick={() => handleAddToCart(product)}>
+                    {added[product.id] ? "Added to Cart" : "Add to Cart"}
+                  </button>
+                ) : (
+                  <button className={styles.addBtnDisabled} disabled>
+                    Out of Stock
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -209,6 +312,27 @@ export default function HomeClient({ initialProducts }) {
               We curate only the finest unstitched ethnic suit fabrics, ensuring every thread tells a story of 
               craftsmanship, culture, and timeless beauty.
             </p>
+          </div>
+        </section>
+
+        <section className={styles.feedbackSection}>
+          <div className={styles.feedbackCard}>
+            <span className={styles.feedbackLabel}>We Value Your Experience</span>
+            <h2 className={styles.feedbackTitle}>Customer Feedback</h2>
+            <p className={styles.feedbackText}>
+              Have questions, feedback, or need assistance? Reach out to us directly on WhatsApp.
+            </p>
+            <a 
+              href="https://wa.me/918851937440?text=Hello!%20I%20have%20feedback%20regarding%20my%20experience%20at%20Rajinder%20Di%20Hatti."
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.whatsappBtn}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ display: 'block' }}>
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.806-9.799.002-2.618-1.016-5.08-2.87-6.934C16.353 2.016 13.9 1.002 11.278 1.002c-5.412 0-9.816 4.399-9.82 9.807-.002 2.062.54 4.075 1.572 5.867L2.04 21.96l5.35-1.401-1.12.607-.623.38zm11.758-5.326c-.301-.151-1.782-.879-2.057-.979-.275-.1-.475-.151-.675.151-.2.301-.775.979-.95 1.18-.175.201-.35.226-.651.075-.3-.15-1.267-.467-2.414-1.492-.893-.797-1.496-1.782-1.672-2.083-.176-.302-.019-.465.131-.615.136-.135.301-.351.451-.527.15-.176.2-.301.3-.502.1-.2.05-.376-.025-.527-.075-.151-.675-1.628-.925-2.229-.243-.584-.489-.505-.675-.515-.175-.01-.375-.01-.575-.01-.2 0-.525.075-.8.376-.275.301-1.05 1.028-1.05 2.509 0 1.48 1.075 2.913 1.225 3.114.15.2 2.115 3.229 5.123 4.527.714.309 1.272.494 1.707.632.718.228 1.37.196 1.885.119.574-.086 1.782-.728 2.032-1.43.25-.702.25-1.303.175-1.43-.075-.127-.275-.201-.575-.351z"/>
+              </svg>
+              Chat on WhatsApp
+            </a>
           </div>
         </section>
 

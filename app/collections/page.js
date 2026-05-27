@@ -7,11 +7,7 @@ export default function CollectionsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const hasSearch = params.get('search');
-    const url = hasSearch ? '/api/products' : '/api/products?category=collections';
-
-    fetch(url)
+    fetch('/api/products')
       .then(res => res.json())
       .then(data => setProducts(data.products || []))
       .finally(() => setLoading(false));

@@ -158,7 +158,11 @@ export default function Header() {
       </div>
 
       <div className={styles.announcementBar}>
-        <p>✦ &nbsp; Razorpay Money Back Promise — Get 100% refund on non-delivery or defects &nbsp; ✦</p>
+        <div className={styles.announcementTrack}>
+          <span>✦ &nbsp; Razorpay Money Back Promise — Get 100% refund on non-delivery or defects &nbsp; ✦</span>
+          <span>✦ &nbsp; Razorpay Money Back Promise — Get 100% refund on non-delivery or defects &nbsp; ✦</span>
+          <span>✦ &nbsp; Razorpay Money Back Promise — Get 100% refund on non-delivery or defects &nbsp; ✦</span>
+        </div>
       </div>
     </>
   )
