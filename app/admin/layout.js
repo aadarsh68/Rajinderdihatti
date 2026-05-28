@@ -12,6 +12,23 @@ export default function AdminLayout({ children }) {
   const [stats, setStats] = useState({ lowStock: 0, outOfStock: 0 });
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  // Auto-collapse sidebar on mobile/tablet viewports
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 900) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+    
+    // Set initial state client-side
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     if (status === 'loading') return;
     if (status === 'unauthenticated' || session?.user?.role !== 'ADMIN') {

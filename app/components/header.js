@@ -7,7 +7,25 @@ import { useWishlist } from '../context/WishlistContext'
 import { useAuth } from '../context/AuthContext'
 import styles from './Header.module.css'
 
-const navLinks = ['ALL SUITS', 'NEW ARRIVALS', 'COLLECTIONS', 'SALE!']
+const navLinks = ['ALL SUITS', 'CATEGORIES', 'COLLECTIONS', 'SALE!']
+
+const CATEGORIES = [
+  'MT Cotton Suits',
+  'MT Maheshwari Suits',
+  'MT Organza Suits',
+  'MT Maslin Suits',
+  'MT Jorget Suits',
+  'MT Chanderi Suits',
+  'MT Silk Suits',
+  'MT Chinon Suits',
+  'MT Crepe Suits',
+  'MT Jaipuri Suits',
+  'MT All Unstitched Suits',
+  'MT MULL CHANDERI',
+  'MT LINEN SHIMMER',
+  'MT KOTA SUITS',
+  'MT Pure jamdani'
+];
 
 export default function Header() {
   const pathname = usePathname()
@@ -17,6 +35,8 @@ export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isMobileCategoriesOpen, setIsMobileCategoriesOpen] = useState(false)
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -105,9 +125,39 @@ export default function Header() {
 
         <nav className={styles.nav}>
           {navLinks.map(link => {
+            if (link === 'CATEGORIES') {
+              return (
+                <div 
+                  key={link} 
+                  className={styles.dropdownContainer}
+                  onMouseEnter={() => setIsDropdownOpen(true)}
+                  onMouseLeave={() => setIsDropdownOpen(false)}
+                >
+                  <button
+                    className={`${styles.navLink} ${styles.dropdownTrigger} ${isDropdownOpen ? styles.navLinkActive : ''}`}
+                    aria-expanded={isDropdownOpen}
+                  >
+                    {link} <span className={styles.arrowIcon}>▼</span>
+                  </button>
+                  <div className={`${styles.dropdownMenu} ${isDropdownOpen ? styles.dropdownMenuOpen : ''}`}>
+                    <div className={styles.dropdownGrid}>
+                      {CATEGORIES.map(cat => (
+                        <Link 
+                          key={cat} 
+                          href={`/collections?category=${encodeURIComponent(cat)}`}
+                          className={styles.dropdownItem}
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          {cat}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             let href = '/';
-            if (link === 'ALL SUITS') href = '/collections';
-            if (link === 'NEW ARRIVALS') href = '/collections?sort=newest';
             if (link === 'COLLECTIONS') href = '/collections';
             if (link === 'SALE!') href = '/sale';
             
@@ -133,9 +183,35 @@ export default function Header() {
         </button>
         <nav className={styles.mobileNav}>
           {navLinks.map(link => {
+            if (link === 'CATEGORIES') {
+              return (
+                <div key={link} className={styles.mobileAccordion}>
+                  <button
+                    className={`${styles.mobileNavLink} ${styles.mobileAccordionTrigger}`}
+                    onClick={() => setIsMobileCategoriesOpen(!isMobileCategoriesOpen)}
+                  >
+                    {link} <span className={`${styles.mobileArrow} ${isMobileCategoriesOpen ? styles.mobileArrowOpen : ''}`}>▼</span>
+                  </button>
+                  <div className={`${styles.mobileAccordionContent} ${isMobileCategoriesOpen ? styles.mobileAccordionContentOpen : ''}`}>
+                    {CATEGORIES.map(cat => (
+                      <Link
+                        key={cat}
+                        href={`/collections?category=${encodeURIComponent(cat)}`}
+                        className={styles.mobileSubNavLink}
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          setIsMobileCategoriesOpen(false);
+                        }}
+                      >
+                        {cat}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
             let href = '/';
-            if (link === 'ALL SUITS') href = '/collections';
-            if (link === 'NEW ARRIVALS') href = '/collections?sort=newest';
             if (link === 'COLLECTIONS') href = '/collections';
             if (link === 'SALE!') href = '/sale';
 

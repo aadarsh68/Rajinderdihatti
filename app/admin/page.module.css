@@ -753,6 +753,8 @@
   border: 1px solid #f0f0f0;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table thead tr:first-child th:first-child {
@@ -1648,6 +1650,127 @@
   font-size: 11px;
   color: #9a8a75;
   font-weight: 600;
+}
+
+/* ── Mobile and Tablet Responsiveness ── */
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 260px;
+  }
+  
+  /* When sidebarOpen is true, .adminPage does NOT have .sidebarCollapsed class, so we show it */
+  .adminPage:not(.sidebarCollapsed) .sidebar {
+    transform: translateX(0);
+  }
+  
+  .adminMain {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+  
+  .adminHeader {
+    padding: 20px 24px;
+  }
+  
+  .pageTitle {
+    font-size: 26px;
+  }
+  
+  .dashContent {
+    padding: 24px;
+    gap: 24px;
+  }
+  
+  .inventoryContent {
+    padding: 24px;
+  }
+  
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .dashGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .adminHeader {
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  
+  .headerLeft {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .userCard {
+    width: fit-content;
+    align-self: flex-end;
+    padding: 8px 12px;
+  }
+  
+  .pageTitle {
+    font-size: 20px;
+  }
+  
+  .pageSubtitle {
+    font-size: 11px;
+  }
+  
+  .dashContent {
+    padding: 16px;
+    gap: 20px;
+  }
+  
+  .inventoryContent {
+    padding: 16px;
+  }
+  
+  .dashboardNotification {
+    margin: 0 16px 16px;
+    padding: 14px 16px;
+    font-size: 12px;
+  }
+  
+  .dashCard {
+    padding: 20px;
+  }
+  
+  .cardValue {
+    font-size: 30px;
+  }
+  
+  .controlsBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .searchBox {
+    min-width: 100%;
+  }
+  
+  .filterBox {
+    justify-content: flex-start;
+  }
+  
+  .bulkBar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  
+  .table th, 
+  .table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
 }
 
 

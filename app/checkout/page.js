@@ -122,20 +122,29 @@ export default function CheckoutPage() {
         description: "Ethnic Wear Purchase",
         order_id: rzpOrderId,
         handler: async (response) => {
-          // Store payment IDs only - webhook will update status after verification
-          const patchRes = await fetch(`/api/orders/${currentOrderId}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              paymentId: response.razorpay_payment_id,
-              razorpayOrderId: response.razorpay_order_id
-            }),
-          });
-          if (!patchRes.ok) throw new Error('Failed to store payment details');
+          try {
+            const verifyRes = await fetch('/api/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              }),
+            });
 
-          setOrderId(currentOrderId);
-          setOrderPlaced(true);
-          clearCart();
+            if (!verifyRes.ok) {
+              const errData = await verifyRes.json();
+              throw new Error(errData.error || 'Payment signature verification failed');
+            }
+
+            setOrderId(currentOrderId);
+            setOrderPlaced(true);
+            clearCart();
+          } catch (verifyErr) {
+            showAlert(verifyErr.message, 'Payment Verification Failed', 'error');
+            setIsSubmitting(false);
+          }
         },
         prefill: {
           name: `${form.firstName} ${form.lastName}`,
