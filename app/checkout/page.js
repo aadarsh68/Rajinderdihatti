@@ -121,6 +121,7 @@ export default function CheckoutPage() {
         name: "Mrigaank Tex",
         description: "Ethnic Wear Purchase",
         order_id: rzpOrderId,
+        config_id: "config_Suk1mHIL9YOOZX",
         handler: async (response) => {
           try {
             const verifyRes = await fetch('/api/verify-payment', {
