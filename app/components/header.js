@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCart } from '../context/CartContext'
@@ -7,7 +7,7 @@ import { useWishlist } from '../context/WishlistContext'
 import { useAuth } from '../context/AuthContext'
 import styles from './Header.module.css'
 
-const navLinks = ['ALL SUITS', 'CATEGORIES', 'COLLECTIONS', 'SALE!']
+const navLinks = ['ALL SUITS', 'CATEGORIES', 'COLLECTIONS', 'BEST SELLER', 'SALE!']
 
 const CATEGORIES = [
   'MT Cotton Suits',
@@ -37,6 +37,13 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isMobileCategoriesOpen, setIsMobileCategoriesOpen] = useState(false)
+  const [isBestseller, setIsBestseller] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsBestseller(window.location.search.includes('bestseller=true'));
+    }
+  }, [pathname]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -159,13 +166,18 @@ export default function Header() {
 
             let href = '/';
             if (link === 'COLLECTIONS') href = '/collections';
+            if (link === 'BEST SELLER') href = '/collections?bestseller=true';
             if (link === 'SALE!') href = '/sale';
             
+            const isActive = link === 'BEST SELLER' 
+              ? (pathname === '/collections' && isBestseller) 
+              : (pathname === href && !isBestseller);
+
             return (
               <Link
                 key={link}
                 href={href}
-                className={`${styles.navLink} ${link === 'SALE!' ? styles.navSale : ''} ${pathname === href ? styles.navLinkActive : ''}`}
+                className={`${styles.navLink} ${link === 'SALE!' ? styles.navSale : ''} ${isActive ? styles.navLinkActive : ''}`}
               >
                 {link}
               </Link>
@@ -213,13 +225,18 @@ export default function Header() {
 
             let href = '/';
             if (link === 'COLLECTIONS') href = '/collections';
+            if (link === 'BEST SELLER') href = '/collections?bestseller=true';
             if (link === 'SALE!') href = '/sale';
+
+            const isActive = link === 'BEST SELLER' 
+              ? (pathname === '/collections' && isBestseller) 
+              : (pathname === href && !isBestseller);
 
             return (
               <Link
                 key={link}
                 href={href}
-                className={`${styles.mobileNavLink} ${link === 'SALE!' ? styles.mobileNavSale : ''}`}
+                className={`${styles.mobileNavLink} ${link === 'SALE!' ? styles.mobileNavSale : ''} ${isActive ? styles.mobileNavLinkActive || styles.navLinkActive : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link}

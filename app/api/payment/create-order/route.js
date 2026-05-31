@@ -1,15 +1,25 @@
 import { NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
-
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_your_key_id',
-  key_secret: process.env.RAZORPAY_KEY_SECRET || 'your_secret_here',
-});
-
 import { prisma } from '../../../lib/prisma';
 
 export async function POST(request) {
   try {
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+    if (!keyId || !keySecret || keyId === 'rzp_test_your_key_id' || keySecret === 'your_secret_here') {
+      console.error('Razorpay credentials are not configured in environment variables or are set to default placeholder values.');
+      return NextResponse.json(
+        { error: 'Razorpay payment gateway is not configured on the server. Please configure RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.' },
+        { status: 500 }
+      );
+    }
+
+    const razorpay = new Razorpay({
+      key_id: keyId,
+      key_secret: keySecret,
+    });
+
     const { orderId } = await request.json();
 
     // Fetch order from DB to get the actual total (Security: never trust amount from client)

@@ -6,6 +6,7 @@ import ProductListClient from '../components/ProductListClient';
 function CollectionsContent() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
+  const bestseller = searchParams.get('bestseller');
   
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,8 +14,11 @@ function CollectionsContent() {
   useEffect(() => {
     setLoading(true);
     let url = '/api/products';
-    if (category) {
-      url += `?category=${encodeURIComponent(category)}`;
+    const params = [];
+    if (category) params.push(`category=${encodeURIComponent(category)}`);
+    if (bestseller === 'true') params.push(`bestseller=true`);
+    if (params.length > 0) {
+      url += `?${params.join('&')}`;
     }
     
     fetch(url)
@@ -22,7 +26,7 @@ function CollectionsContent() {
       .then(data => setProducts(data.products || []))
       .catch(err => console.error("Error fetching products:", err))
       .finally(() => setLoading(false));
-  }, [category]);
+  }, [category, bestseller]);
 
   if (loading) {
     return (
@@ -37,8 +41,8 @@ function CollectionsContent() {
   return (
     <ProductListClient 
       products={products} 
-      title={category || "Our Collections"} 
-      subtitle={category ? `Explore our premium selection of ${category}` : "Curated styles for every occasion"}
+      title={bestseller === 'true' ? "Best Sellers" : (category || "Our Collections")} 
+      subtitle={bestseller === 'true' ? "Fast-selling favorites — running extremely low on stock!" : (category ? `Explore our premium selection of ${category}` : "Curated styles for every occasion")}
     />
   );
 }

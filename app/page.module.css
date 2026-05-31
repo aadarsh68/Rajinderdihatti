@@ -558,6 +558,29 @@
 .storyContent { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
 .storyTitle { font-size: 42px; font-weight: 300; letter-spacing: 10px; text-transform: uppercase; margin-bottom: 30px; }
 .storyText { font-size: 16px; line-height: 1.8; color: rgba(232,200,112,0.7); font-weight: 500; }
+.visitStoreBtn {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 24px;
+  background: transparent;
+  color: #e8c870;
+  border: 1.5px solid #e8c870;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.visitStoreBtn:hover {
+  background: #e8c870;
+  color: #1a1510;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(232, 200, 112, 0.25);
+}
 
 /* ── Feedback Section ── */
 .feedbackSection {

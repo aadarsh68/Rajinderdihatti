@@ -26,6 +26,7 @@ export async function GET() {
         code: i.product.code,
         bg: i.product.colorHex,
         color: i.product.color,
+        imageUrl: i.product.imageUrl,
         qty: i.quantity,
       })),
     });

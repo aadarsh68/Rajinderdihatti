@@ -312,6 +312,18 @@ export default function HomeClient({ initialProducts }) {
               We curate only the finest unstitched ethnic suit fabrics, ensuring every thread tells a story of 
               craftsmanship, culture, and timeless beauty.
             </p>
+            <a 
+              href="https://www.google.com/maps/dir/28.657136,77.2254/Rajinder+%26+Company,+439,+Manohar+Market,+Katra+Neel,+Chandni+Chowk,+Delhi,+New+Delhi,+Delhi+110006/@28.6570921,77.2229301,17z/data=!3m1!4b1!4m10!4m9!1m1!4e1!1m5!1m1!1s0x390cfd11c7f53851:0xcbab46aef0f1c070!2m2!1d77.2253402!2d28.6571017!3e0?entry=ttu&g_ep=EgoyMDI2MDUyNi4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.visitStoreBtn}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: 8, verticalAlign: 'middle' }}>
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Visit Our Store
+            </a>
           </div>
         </section>
 

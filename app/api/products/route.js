@@ -4,9 +4,14 @@ import { prisma } from '../../lib/prisma';
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const category = searchParams.get('category');
+  const bestseller = searchParams.get('bestseller');
 
   try {
     let where = {};
+    
+    if (bestseller === 'true') {
+      where.stock = { lte: 2 };
+    }
     
     if (category) {
       if (category === 'sale') {
