@@ -18,7 +18,7 @@ export async function POST(request) {
 
     const body = await request.json();
     const { 
-      shippingAddress, phone, email, paymentMethod, delivery = 'standard'
+      shippingAddress, phone, email, paymentMethod, delivery = 'standard', couponCode
     } = body || {};
 
     if (!shippingAddress || !phone) {
@@ -38,6 +38,23 @@ export async function POST(request) {
     // Calculate Subtotal from DB prices
     const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
     
+    // Calculate coupon discount
+    let discount = 0;
+    if (couponCode) {
+      const codeUpper = couponCode.trim().toUpperCase();
+      if (codeUpper === 'WELCOME200') {
+        const orderCount = await prisma.order.count({
+          where: { userId }
+        });
+        if (orderCount > 0) {
+          return buildError('This coupon is only valid for new users on their first order.');
+        }
+        discount = Math.min(subtotal, 200);
+      } else {
+        return buildError('Invalid coupon code.');
+      }
+    }
+    
     // Calculate Shipping (Standard: 149, Free above 5000 | Express: 299)
     let shippingPrice = 0;
     if (delivery === 'express') {
@@ -49,7 +66,7 @@ export async function POST(request) {
     // Calculate Handling Fee (COD: 50)
     const handlingFee = paymentMethod === 'cod' ? 50 : 0;
     
-    const total = subtotal + shippingPrice + handlingFee;
+    const total = subtotal - discount + shippingPrice + handlingFee;
 
     // Prepare order items
     const orderItemsData = cartItems.map((item) => {
@@ -72,6 +89,8 @@ export async function POST(request) {
         paymentMethod,
         shippingPrice,
         handlingFee,
+        discount,
+        couponCode: couponCode ? couponCode.trim().toUpperCase() : null,
         items: {
           create: orderItemsData,
         },

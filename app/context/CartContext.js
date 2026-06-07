@@ -12,6 +12,7 @@ export function CartProvider({ children }) {
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
 
   // Load cart from API or LocalStorage
   useEffect(() => {
@@ -99,14 +100,15 @@ export function CartProvider({ children }) {
 
   const subtotal = cartItems.reduce((sum, i) => sum + i.price * i.qty, 0);
   const shipping = subtotal > 5000 ? 0 : 149;
-  const total = subtotal + shipping;
+  const discount = appliedCoupon ? Math.min(subtotal, appliedCoupon.discount) : 0;
+  const total = subtotal - discount + shipping;
   const itemCount = cartItems.reduce((sum, i) => sum + i.qty, 0);
 
   return (
     <CartContext.Provider value={{
       cartItems, addToCart, removeFromCart, updateQty,
       clearCart, placeOrder, subtotal, shipping, total, itemCount,
-      orderPlaced, orderId
+      orderPlaced, orderId, appliedCoupon, setAppliedCoupon, discount
     }}>
       {children}
     </CartContext.Provider>

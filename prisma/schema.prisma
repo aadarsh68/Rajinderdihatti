@@ -78,6 +78,8 @@ model Order {
   shippingPrice   Float    @default(0)
   handlingFee     Float    @default(0)
   trackingUrl     String?
+  discount        Float    @default(0)
+  couponCode      String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 

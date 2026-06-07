@@ -301,7 +301,10 @@ export default function ProfilePage() {
                       <span className={styles.orderDate}>{new Date(order.createdAt).toLocaleDateString()}</span>
                     </div>
                     <div className={styles.orderDetails}>
-                      <span className={styles.orderItems}>{order.items.length} item{order.items.length > 1 ? 's' : ''}</span>
+                      <span className={styles.orderItems}>
+                        {order.items.length} item{order.items.length > 1 ? 's' : ''}
+                        {order.discount > 0 && ` (Coupon ${order.couponCode}: -₹${order.discount.toLocaleString('en-IN')})`}
+                      </span>
                       <span className={styles.orderTotal}>₹ {order.total.toLocaleString('en-IN')}</span>
                       <span className={`${styles.orderStatus} ${styles[order.status.toLowerCase()]}`}>{order.status}</span>
                     </div>

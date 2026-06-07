@@ -59,7 +59,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { user } = useAuth();
   const { showAlert } = useUI();
-  const { cartItems, subtotal, shipping, total, itemCount, clearCart } = useCart();
+  const { cartItems, subtotal, shipping, total, itemCount, clearCart, appliedCoupon, setAppliedCoupon, discount: cartDiscount } = useCart();
   const [delivery, setDelivery] = useState('standard');
   const [paymentMethod, setPaymentMethod] = useState('razorpay');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,6 +71,51 @@ export default function CheckoutPage() {
     firstName: '', lastName: '', email: '', phone: '',
     address: '', apartment: '', city: '', state: '', pincode: '', landmark: '',
   });
+
+  const [couponCode, setCouponCode] = useState(appliedCoupon ? appliedCoupon.code : '');
+  const [couponError, setCouponError] = useState('');
+  const [couponSuccess, setCouponSuccess] = useState('');
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+
+  useEffect(() => {
+    if (appliedCoupon) {
+      setCouponCode(appliedCoupon.code);
+    } else {
+      setCouponCode('');
+    }
+  }, [appliedCoupon]);
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setIsApplyingCoupon(true);
+    setCouponError('');
+    setCouponSuccess('');
+    try {
+      const res = await fetch('/api/coupon/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ couponCode })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to validate coupon');
+      }
+      setAppliedCoupon({ code: couponCode.trim().toUpperCase(), discount: data.discount });
+      setCouponSuccess(data.message || 'Coupon applied successfully!');
+    } catch (err) {
+      setCouponError(err.message);
+      setAppliedCoupon(null);
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode('');
+    setCouponSuccess('');
+    setCouponError('');
+  };
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -182,6 +227,7 @@ export default function CheckoutPage() {
           paymentMethod,
           delivery, // Send delivery type so backend can calculate shipping
           email: form.email,
+          couponCode: appliedCoupon ? appliedCoupon.code : undefined,
         }),
       });
 
@@ -360,8 +406,38 @@ export default function CheckoutPage() {
                 </div>
               ))}
             </div>
+            <div className={styles.summaryDivider} />
+            <div className={styles.couponSection}>
+              <h3 className={styles.couponTitle}>Apply Promo Code</h3>
+              <div className={styles.couponInputWrap}>
+                <input
+                  type="text"
+                  placeholder="Enter code (e.g. WELCOME200)"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  className={styles.couponInput}
+                  disabled={!!appliedCoupon}
+                />
+                {appliedCoupon ? (
+                  <button onClick={handleRemoveCoupon} className={styles.couponBtnRemove}>Remove</button>
+                ) : (
+                  <button onClick={handleApplyCoupon} className={styles.couponBtn} disabled={isApplyingCoupon}>
+                    {isApplyingCoupon ? '...' : 'Apply'}
+                  </button>
+                )}
+              </div>
+              {couponError && <p className={styles.couponError}>{couponError}</p>}
+              {couponSuccess && <p className={styles.couponSuccess}>{couponSuccess}</p>}
+            </div>
+            <div className={styles.summaryDivider} />
             <div className={styles.summaryRows}>
               <div className={styles.summaryRow}><span>Subtotal ({itemCount} items)</span><span>₹ {subtotal.toLocaleString('en-IN')}</span></div>
+              {appliedCoupon && (
+                <div className={styles.summaryRow}>
+                  <span>Discount ({appliedCoupon.code})</span>
+                  <span className={styles.discountAmt}>- ₹ {appliedCoupon.discount.toLocaleString('en-IN')}</span>
+                </div>
+              )}
               <div className={styles.summaryRow}>
                 <span>Shipping ({delivery === 'express' ? 'Express' : 'Standard'})</span>
                 <span className={(delivery === 'standard' && subtotal > 5000) ? styles.freeShipping : ''}>
@@ -375,7 +451,8 @@ export default function CheckoutPage() {
               <div className={`${styles.summaryRow} ${styles.totalRow}`}>
                 <span>Total</span>
                 <span>₹ {(
-                  subtotal +
+                  subtotal -
+                  (appliedCoupon ? appliedCoupon.discount : 0) +
                   (delivery === 'express' ? 299 : (subtotal > 5000 ? 0 : 149)) +
                   (paymentMethod === 'cod' ? 50 : 0)
                 ).toLocaleString('en-IN')}</span>

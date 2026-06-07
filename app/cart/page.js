@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 import { ProductSwatch } from '../components/ProductSwatch';
@@ -16,7 +17,44 @@ function GoldDivider() {
 }
 
 export default function CartPage() {
-  const { cartItems, removeFromCart, updateQty, subtotal, shipping, total, itemCount } = useCart();
+  const { cartItems, removeFromCart, updateQty, subtotal, shipping, total, itemCount, appliedCoupon, setAppliedCoupon, discount } = useCart();
+
+  const [promoCode, setPromoCode] = useState(appliedCoupon ? appliedCoupon.code : '');
+  const [promoError, setPromoError] = useState('');
+  const [promoSuccess, setPromoSuccess] = useState('');
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false);
+
+  const handleApplyPromo = async () => {
+    if (!promoCode.trim()) return;
+    setIsApplyingPromo(true);
+    setPromoError('');
+    setPromoSuccess('');
+    try {
+      const res = await fetch('/api/coupon/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ couponCode: promoCode })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to validate coupon');
+      }
+      setAppliedCoupon({ code: promoCode.trim().toUpperCase(), discount: data.discount });
+      setPromoSuccess(data.message || 'Coupon applied successfully!');
+    } catch (err) {
+      setPromoError(err.message);
+      setAppliedCoupon(null);
+    } finally {
+      setIsApplyingPromo(false);
+    }
+  };
+
+  const handleRemovePromo = () => {
+    setAppliedCoupon(null);
+    setPromoCode('');
+    setPromoSuccess('');
+    setPromoError('');
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -136,6 +174,12 @@ export default function CartPage() {
                 <span>Subtotal ({itemCount} items)</span>
                 <span>₹ {subtotal.toLocaleString('en-IN')}</span>
               </div>
+              {appliedCoupon && (
+                <div className={styles.summaryRow}>
+                  <span>Discount ({appliedCoupon.code})</span>
+                  <span style={{ color: '#c05030', fontWeight: 'bold' }}>- ₹ {discount.toLocaleString('en-IN')}</span>
+                </div>
+              )}
               <div className={styles.summaryRow}>
                 <span>Shipping</span>
                 <span className={shipping === 0 ? styles.freeShipping : ''}>
@@ -155,9 +199,24 @@ export default function CartPage() {
             </div>
 
             <div className={styles.promoWrap}>
-              <input type="text" placeholder="Promo code" className={styles.promoInput} />
-              <button className={styles.promoBtn}>Apply</button>
+              <input
+                type="text"
+                placeholder="Promo code"
+                className={styles.promoInput}
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
+                disabled={!!appliedCoupon}
+              />
+              {appliedCoupon ? (
+                <button onClick={handleRemovePromo} className={styles.promoBtn} style={{ background: '#c05030', color: 'white' }}>Remove</button>
+              ) : (
+                <button onClick={handleApplyPromo} className={styles.promoBtn} disabled={isApplyingPromo}>
+                  {isApplyingPromo ? '...' : 'Apply'}
+                </button>
+              )}
             </div>
+            {promoError && <p style={{ fontSize: '11px', color: '#c05030', margin: '-10px 0 15px', textAlign: 'left' }}>{promoError}</p>}
+            {promoSuccess && <p style={{ fontSize: '11px', color: '#2a7a40', fontWeight: 600, margin: '-10px 0 15px', textAlign: 'left' }}>{promoSuccess}</p>}
 
             <Link href="/checkout" className={styles.btnPrimary} style={{ display: 'block', textAlign: 'center' }}>
               Proceed to Checkout

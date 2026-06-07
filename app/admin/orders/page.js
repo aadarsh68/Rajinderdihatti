@@ -267,7 +267,8 @@ export default function AdminOrders() {
           </table>
           
           <div class="totals-box">
-            <div>Subtotal: ₹${(order.total - (order.shippingPrice || 0) - (order.handlingFee || 0)).toLocaleString('en-IN')}</div>
+            <div>Subtotal: ₹${(order.total - (order.shippingPrice || 0) - (order.handlingFee || 0) + (order.discount || 0)).toLocaleString('en-IN')}</div>
+            ${order.discount > 0 ? `<div style="color: #c05030;">Discount (${order.couponCode || 'Promo'}): -₹${order.discount.toLocaleString('en-IN')}</div>` : ''}
             ${order.shippingPrice > 0 ? `<div>Shipping: ₹${order.shippingPrice.toLocaleString('en-IN')}</div>` : ''}
             ${order.handlingFee > 0 ? `<div>Handling Fee: ₹${order.handlingFee.toLocaleString('en-IN')}</div>` : ''}
             <div class="total-row">Total Paid: ₹${order.total.toLocaleString('en-IN')}</div>
@@ -414,8 +415,13 @@ export default function AdminOrders() {
 
                   <div style={{ background: '#1a1510', color: '#e8c870', padding: '20px', borderRadius: '8px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px' }}>
-                      <span>Subtotal</span><span>₹{(selectedOrder.total - (selectedOrder.shippingPrice || 0) - (selectedOrder.handlingFee || 0)).toLocaleString('en-IN')}</span>
+                      <span>Subtotal</span><span>₹{(selectedOrder.total - (selectedOrder.shippingPrice || 0) - (selectedOrder.handlingFee || 0) + (selectedOrder.discount || 0)).toLocaleString('en-IN')}</span>
                     </div>
+                    {selectedOrder.discount > 0 && (
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px', color: '#ff8a8a' }}>
+                        <span>Discount ({selectedOrder.couponCode})</span><span>- ₹{(selectedOrder.discount || 0).toLocaleString('en-IN')}</span>
+                      </div>
+                    )}
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px' }}>
                       <span>Shipping</span><span>₹{(selectedOrder.shippingPrice || 0).toLocaleString('en-IN')}</span>
                     </div>
