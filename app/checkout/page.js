@@ -62,6 +62,11 @@ export default function CheckoutPage() {
   const { cartItems, subtotal, shipping, total, itemCount, clearCart, appliedCoupon, setAppliedCoupon, discount: cartDiscount } = useCart();
   const [delivery, setDelivery] = useState('standard');
   const [paymentMethod, setPaymentMethod] = useState('razorpay');
+  const checkoutDiscount = appliedCoupon
+    ? (appliedCoupon.code === 'TEST1' || appliedCoupon.code === 'RZP1'
+        ? Math.max(0, subtotal + (delivery === 'express' ? 299 : (subtotal > 5000 ? 0 : 149)) + (paymentMethod === 'cod' ? 50 : 0) - 1)
+        : appliedCoupon.discount)
+    : 0;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderId, setOrderId] = useState(null);
@@ -435,7 +440,7 @@ export default function CheckoutPage() {
               {appliedCoupon && (
                 <div className={styles.summaryRow}>
                   <span>Discount ({appliedCoupon.code})</span>
-                  <span className={styles.discountAmt}>- ₹ {appliedCoupon.discount.toLocaleString('en-IN')}</span>
+                  <span className={styles.discountAmt}>- ₹ {checkoutDiscount.toLocaleString('en-IN')}</span>
                 </div>
               )}
               <div className={styles.summaryRow}>
@@ -452,7 +457,7 @@ export default function CheckoutPage() {
                 <span>Total</span>
                 <span>₹ {(
                   subtotal -
-                  (appliedCoupon ? appliedCoupon.discount : 0) +
+                  checkoutDiscount +
                   (delivery === 'express' ? 299 : (subtotal > 5000 ? 0 : 149)) +
                   (paymentMethod === 'cod' ? 50 : 0)
                 ).toLocaleString('en-IN')}</span>

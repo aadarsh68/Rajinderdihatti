@@ -40,6 +40,12 @@ export async function POST(request) {
     const razorpayOrder = await razorpay.orders.create(options);
     console.log('Razorpay Order Created:', razorpayOrder.id);
 
+    // Update order with Razorpay order ID in DB
+    await prisma.order.update({
+      where: { id: orderId },
+      data: { razorpayOrderId: razorpayOrder.id }
+    });
+
     return NextResponse.json({ id: razorpayOrder.id, amount: razorpayOrder.amount });
   } catch (error) {
     console.error('Razorpay order creation error:', error);

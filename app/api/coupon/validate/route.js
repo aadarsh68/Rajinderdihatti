@@ -43,6 +43,24 @@ export async function POST(request) {
       });
     }
 
+    if (codeUpper === 'TEST1' || codeUpper === 'RZP1') {
+      const cartItems = await prisma.cartItem.findMany({
+        where: { userId },
+        include: { product: true },
+      });
+
+      const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+      const shipping = subtotal > 5000 ? 0 : 149;
+      const discount = Math.max(0, subtotal + shipping - 1);
+
+      return NextResponse.json({
+        success: true,
+        valid: true,
+        discount,
+        message: 'Razorpay Test Coupon applied! Total is now ₹1.'
+      });
+    }
+
     return buildError('Invalid coupon code.');
   } catch (error) {
     console.error('Coupon validation error:', error);
